@@ -1,35 +1,89 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <windows.h>
-int tam=9;
-char cenario[10][10];
-int x, y;
+#include <conio.h>
+
+int tamanhol=11;
+int tamanhoc=11;
+
+char cenario1[11][11];
+
+int x=1, y=1;
 int x1, y1;
 int i, j;
-void cenarioatual{
-	system("cls");
-	for (i=0;i<tam;i++){
-		for (j=0;j<tam;j++){
-			printf("%c", cenario[i][j]);
+
+void cenario(){
+	for (i=0;i<tamanhol;i++){
+		for(j=0;j<tamanhoc;j++){
+			printf("%c", cenario1[j][i]);
 		}
 		printf("\n");
 	}
 }
+void andar(char key){
+	if (key== 's'){
+		if (cenario1[x][y+1]=='#'){
+			return;
+		}
+		cenario1[x][y]=' ';
+		y++;
+		cenario1[x][y]='*';	
+	}
+	if (key== 'w'){
+		if (cenario1[x][y-1]=='#'){
+			return;
+		}
+		cenario1[x][y]=' ';
+		y--;
+		cenario1[x][y]='*';	
+	}
+	if (key== 'd'){
+		if (cenario1[x+1][y]=='#'){
+			return;
+		}
+		cenario1[x][y]=' ';
+		x++;
+		cenario1[x][y]='*';	
+	}
+	if (key== 'a'){
+		if (cenario1[x-1][y]=='#'){
+			return;
+		}
+		cenario1[x][y]=' ';
+		x--;
+		cenario1[x][y]='*';	
+	}
+}
 
-int main(){
-	for (i=0;i<tam;i++){
-		for (j=0;j<tam;j++){
-			if (i==0||i==tam){
-				cenario[i][j]='*';
+
+int main()
+{
+	for (i=0;i<tamanhol;i++){
+		for(j=0;j<tamanhoc;j++){
+			if (i==tamanhol || j==tamanhoc){
+				cenario1[j][i]='#';
 			}
-			else if (j==0||j==tam){
-				cenario[i][j]='*';
+			else if( i==0 || j==0 || i==tamanhol-1 || j==tamanhoc-1){
+				cenario1[j][i]='#';
 			}
 			else{
-				cenario[i][j]='  ';
+				cenario1[j][i]=' ';
 			}
 		}
 	}
-	cenarioatual();
-	return 0;
+	
+	while (1){
+		if (_kbhit()){
+			char key = _getch();
+			
+			if (key == 27) break;
+				// fazer verificação, bate na parede aaaaa, do andar todinho
+			
+			andar(key);
+			cenario();
+			
+			
+		}
+	}
+		
+    return 0;
 }
