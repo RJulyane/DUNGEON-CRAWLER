@@ -17,6 +17,7 @@ int xx=9, yx=1, bixox;
 int i, j;
 
 int vidas=3;
+int condicao='a';
 
 int MORTE=0;
 char MORTEc[5]= "vivo";
@@ -36,6 +37,16 @@ void condicaoMorte(int coord, int cord){
 		if (cenario1[coord][cord]==causas[i]){
 			MORTE=1;
 			vidas--;
+			do {
+				condicao = (rand()%3)+1;
+				if (condicao==0)x--;
+				else if (condicao==1)x++;
+				else if (condicao==2)y--;
+				else if (condicao==3)y++;
+			}while(x!=' ' && y!=' ');
+			cenario1[x][y]='^';// ta sumindo aaa
+			
+			
 		}
 	}
 
@@ -52,10 +63,13 @@ void acao(char key){
 	}
 	if (cenario1[x][y] == '#'){
 		vidas--;
+		
+		
 		return;
 	}
-	
-	if (key== 's'){
+	switch(key)
+	{
+	case 's':
 		// fazer ele morrer se passar pelos espinhos, ou trocar por *
 		if (cenario1[x][y+1]=='*'){
 			return;
@@ -63,31 +77,35 @@ void acao(char key){
 		cenario1[x][y]=' ';
 		y++;
 		cenario1[x][y]='v';	
-	}
-	if (key== 'w'){
+		break;
+	case 'w':
 		if (cenario1[x][y-1]=='*'){
 			return;
 		}
 		cenario1[x][y]=' ';
 		y--;
 		cenario1[x][y]='^';	
-	}
-	if (key== 'd'){
+		break;
+	case 'd':
 		if (cenario1[x+1][y]=='*'){
 			return;
 		}
 		cenario1[x][y]=' ';
 		x++;
-		cenario1[x][y]='>';	
-	}
-	if (key== 'a'){
+		cenario1[x][y]='>';
+		break;
+	case 'a':
 		if (cenario1[x-1][y]=='*'){
 			return;
 		}
 		cenario1[x][y]=' ';
 		x--;
 		cenario1[x][y]='<';	
+		break;
+	default:
+		break;
 	}
+	
 }
 void bixo(){
 	bixox= (rand()%3)+1;
