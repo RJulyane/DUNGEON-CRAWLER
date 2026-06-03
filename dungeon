@@ -39,7 +39,10 @@ void cenario(){
 void condicaoMorte(){
 	if ( ( cenario1[xx][yx] == '^') || ( cenario1[xx][yx] == 'v') || ( cenario1[xx][yx] == '<') || ( cenario1[xx][yx] == '>') ){
 		vidas--;
-		void animacaoMorte();
+		return;
+	}
+	if ( ( cenario1[xy][yy] == '^') || ( cenario1[xy][yy] == 'v') || ( cenario1[xy][yy] == '<') || ( cenario1[xy][yy] == '>') ){
+		vidas--;
 		return;
 	}
 	/*if (cenario1[x][y] == 'x'){
@@ -163,51 +166,94 @@ void bixo2(){
 	cenario1[xy][yy]=' ';
 	condicaoMorte();
 	bixoy= (rand()%2);
-	if (x==xy&&y<yy){
-		if (cenario1[xy][yy-1]=='*'||cenario1[xy][yy-1]=='#'){
-			yy++;
-			cenario1[xy][yy]='y';
-			return;
-		}
-		yy--;
-		cenario1[xy][yy]='y';
+	
+	// if (x==xy&&y<yy){
+	// 	if (cenario1[xy][yy-1]=='*'||cenario1[xy][yy-1]=='#'){
+	// 		yy++;
+	// 		cenario1[xy][yy]='y';
+	// 		return;
+	// 	}
+	// 	yy--;
+	// 	cenario1[xy][yy]='y';
 		// cima
-	}
-	else if (x==xy&&y>yy){
-		if (cenario1[xy][yy+1]=='*'||cenario1[xy][yy+1]=='#'){
-			yy--;
-			cenario1[xy][yy]='y';
-			return;
-		}
-		yy++;
-		cenario1[xy][yy]='y';
+	// }
+	// else if (x==xy&&y>yy){
+	// 	if (cenario1[xy][yy+1]=='*'||cenario1[xy][yy+1]=='#'){
+	// 		yy--;
+	// 		cenario1[xy][yy]='y';
+	// 		return;
+	// 	}
+	// 	yy++;
+	// 	cenario1[xy][yy]='y';
 		// baixo
-	}
-	else if (y==yy&&x>xy){
-		if (cenario1[xy+1][yy]=='*'||cenario1[xy+1][yy]=='#'){
-			xy--;
-			cenario1[xy][yy]='y';
-			return;
-		}
-		xy++;
-		cenario1[xy][yy]='y';
+	// }
+	// else if (y==yy&&x>xy){
+	// 	if (cenario1[xy+1][yy]=='*'||cenario1[xy+1][yy]=='#'){
+	// 		xy--;
+	// 		cenario1[xy][yy]='y';
+	// 		return;
+	// 	}
+	// 	xy++;
+	// 	cenario1[xy][yy]='y';
 		// direita
-	}
-	else if (y==yy&&x<xy){
-		if (cenario1[xy-1][yy]=='*'||cenario1[xy-1][yy]=='#'){
-			xy++;
-			cenario1[xy][yy]='y';
-			return;
-		}
-		xy--;
-		cenario1[xy][yy]='y';
+	// }
+	// else if (y==yy&&x<xy){
+	// 	if (cenario1[xy-1][yy]=='*'||cenario1[xy-1][yy]=='#'){
+	// 		xy++;
+	// 		cenario1[xy][yy]='y';
+	// 		return;
+	// 	}
+	// 	xy--;
+	// 	cenario1[xy][yy]='y';
 		// esquerda
+	// }
+	// else{
+		/*
+		do{
+		   	xy= 1+(rand()%10);
+			yy= 1+(rand()%10);
+		}while (cenario1[xy][yy]==' '); ideia de monstro que ue preciso
+		entender sobre como funciona 
+		*/
+		
+		// for (i=1;i<10;i++){
+		// 	
+		// }
+	// }
+	
+	while (1){
+		if (cenario1[xy][yy+1] == '#' || cenario1[xy][yy+1] == '*'){
+			yy--;
+			continue;
+		}
+		if (cenario1[xy][yy-1] == '#' || cenario1[xy][yy-1] == '*'){
+			yy++;
+			continue;
+		}
+		
+		if (cenario1[xy+1][yy] == '#' || cenario1[xy+1][yy] == '*'){
+			xy--;
+			continue;
+		}
+		if (cenario1[xy-1][yy] == '#' || cenario1[xy-1][yy] == '*'){
+			xy++;
+			continue;
+		}
+		
+		if ( ( ( abs(xy - x) ) > ( abs(yy - y) ) ) && ( abs(xy-x) <= 2)) {
+			if (xy < x) xy++;
+			else xy--;
+		}
+		else {
+			if (yy <= y) yy++;
+			else yy--;
+		}
+		
+		break;
 	}
-	else{
-		yy++;
-		cenario1[xy][yy]='y';
-	}
+	cenario1[xy][yy] = 'y';
 	condicaoMorte();
+	
 }
 int main(){
 	srand(0);
@@ -234,10 +280,11 @@ int main(){
 			if (key == 27) break;
 			
 			cenario1[5][4]='#';
-			//bixo();
+			acao(key);
+			bixo();
 			bixo2();
 			system("cls");
-			acao(key);
+			printf(">> Y: %d, %d | >> P: %d, %d -> ( %d ) | ( %d )\n", xy, yy, x, y, xy - x, yy - y);
 			//condicaoMorte(x, y);
 			//if (MORTE==1) break;
 			cenario();
