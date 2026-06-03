@@ -12,7 +12,8 @@ int tamanhoc=11;
 
 char cenario1[11][11];
 
-int x=5, y=5;
+int x=5, y=6;
+int x0=5, y0=6;
 int xx=9, yx=1, bixox;
 int i, j;
 
@@ -36,15 +37,9 @@ void condicaoMorte(int coord, int cord){
 	for (i=0;i<=4;i++){
 		if (cenario1[coord][cord]==causas[i]){
 			MORTE=1;
-			vidas--;
-			do {
-				condicao = (rand()%3)+1;
-				if (condicao==0)x--;
-				else if (condicao==1)x++;
-				else if (condicao==2)y--;
-				else if (condicao==3)y++;
-			}while(x!=' ' && y!=' ');
-			cenario1[x][y]='^';// ta sumindo aaa
+			vidas-=1;
+			x= x0;
+			y= y0;
 			
 			
 		}
@@ -59,12 +54,16 @@ void acao(char key){
 	}
 	if (cenario1[x][y] == 'x'){
 		vidas--;
+		x= x0;
+		y= y0;
+		cenario1[x][y]='^';
 		return;
 	}
 	if (cenario1[x][y] == '#'){
 		vidas--;
-		
-		
+		x= x0;
+		y= y0;
+		cenario1[x][y]='^';
 		return;
 	}
 	switch(key)
@@ -111,7 +110,7 @@ void bixo(){
 	bixox= (rand()%3)+1;
 	cenario1[xx][yx]=' ';
 	if (bixox==0){
-		if (cenario1[xx][yx-1]=='*'){
+		if (cenario1[xx][yx-1]=='*'||cenario1[xx][yx-1]=='#'){
 			yx++;
 			cenario1[xx][yx]='x';
 			return;
@@ -121,7 +120,7 @@ void bixo(){
 		// cima
 	}
 	else if (bixox==1){
-		if (cenario1[xx][yx+1]=='*'){
+		if (cenario1[xx][yx+1]=='*'||cenario1[xx][yx+1]=='#'){
 			yx--;
 			cenario1[xx][yx]='x';
 			return;
@@ -131,7 +130,7 @@ void bixo(){
 		// baixo
 	}
 	else if (bixox==2){
-		if (cenario1[xx+1][yx]=='*'){
+		if (cenario1[xx+1][yx]=='*'||cenario1[xx+1][yx]=='#'){
 			xx--;
 			cenario1[xx][yx]='x';
 			return;
@@ -141,7 +140,7 @@ void bixo(){
 		// direita
 	}
 	else{
-		if (cenario1[xx-1][yx]=='*'){
+		if (cenario1[xx-1][yx]=='*'||cenario1[xx-1][yx]=='#'){
 			xx++;
 			cenario1[xx][yx]='x';
 			return;
@@ -178,9 +177,9 @@ int main(){
 			
 			system("cls");
 			acao(key);
-			condicaoMorte(x, y);
+			//condicaoMorte(x, y);
 			//if (MORTE==1) break;
-			//bixo();
+			bixo();
 			cenario();
 			
 			printf("vidas= %d \n", vidas);			
