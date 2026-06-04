@@ -6,7 +6,7 @@
 #include <windows.h>
 
 // lembrar de colocar que o 0 significa que o monstro comeu o jogador, e gamer over
-//fazer alguma coisinha legal com a resucitação ali 
+//fazer alguma coisinha legal com a ressucitação ali 
 
 int tamanhol=11;
 int tamanhoc=11;
@@ -16,7 +16,9 @@ char cenario1[11][11];
 int x=5, y=6;
 int x0=5, y0=6;
 int xx=9, yx=1, bixox;
+int bx1=9, by1=1;
 int xy=1, yy=9, bixoy;
+int bx2=1, by2=9;
 int i, j;
 
 int vidas=3;
@@ -37,15 +39,14 @@ void cenario(){
 }
 
 void condicaoMorte(){
+	
+	/*
 	if ( ( cenario1[xx][yx] == '^') || ( cenario1[xx][yx] == 'v') || ( cenario1[xx][yx] == '<') || ( cenario1[xx][yx] == '>') ){
 		vidas--;
+		void animacaoMorte();
 		return;
 	}
-	if ( ( cenario1[xy][yy] == '^') || ( cenario1[xy][yy] == 'v') || ( cenario1[xy][yy] == '<') || ( cenario1[xy][yy] == '>') ){
-		vidas--;
-		return;
-	}
-	/*if (cenario1[x][y] == 'x'){
+	if (cenario1[x][y] == 'x'){
 		vidas--;
 		x= x0;
 		y= y0;
@@ -53,21 +54,35 @@ void condicaoMorte(){
 		return;
 	}
 	*/
+	void reiniciar(){
+		cenario1[x][y]=' ';
+		cenario1[xx][yx]=' ';
+		cenario1[xy][yy]=' ';
+		
+		vidas--;
+		
+		x= x0;
+		y= y0;
+		xx=bx1;
+		yx=by1;
+		xy=bx2;
+		yy=by2;
+		
+		cenario1[x][y]='^';
+		cenario1[xx][yx]='x';
+		cenario1[xy][yy]='y';
+	}
 		
 	if (x==xx&&y==yx){
-		vidas--;
-		x= x0;
-		y= y0;
-		void animacaoMorte();
-		cenario1[x][y]='^';
+		reiniciar();
 		return;
 	} 
+	if (x==xy&&y==yy){
+		reiniciar();
+		return;
+	}
 	if (cenario1[x][y] == '#'){
-		vidas--;
-		x= x0;
-		y= y0;
-		void animacaoMorte();
-		cenario1[x][y]='^';
+		reiniciar();
 		return;
 	}
 }
@@ -117,7 +132,7 @@ void acao(char key){
 }
 void bixo(){
 	bixox= (rand()%4);
-	cenario1[xx][yx]=' ';
+	cenario1[xx][yx]=' '; 
 	condicaoMorte();
 	if (bixox==0){
 		if (cenario1[xx][yx-1]=='*'||cenario1[xx][yx-1]=='#'){
@@ -167,60 +182,6 @@ void bixo2(){
 	condicaoMorte();
 	bixoy= (rand()%2);
 	
-	// if (x==xy&&y<yy){
-	// 	if (cenario1[xy][yy-1]=='*'||cenario1[xy][yy-1]=='#'){
-	// 		yy++;
-	// 		cenario1[xy][yy]='y';
-	// 		return;
-	// 	}
-	// 	yy--;
-	// 	cenario1[xy][yy]='y';
-		// cima
-	// }
-	// else if (x==xy&&y>yy){
-	// 	if (cenario1[xy][yy+1]=='*'||cenario1[xy][yy+1]=='#'){
-	// 		yy--;
-	// 		cenario1[xy][yy]='y';
-	// 		return;
-	// 	}
-	// 	yy++;
-	// 	cenario1[xy][yy]='y';
-		// baixo
-	// }
-	// else if (y==yy&&x>xy){
-	// 	if (cenario1[xy+1][yy]=='*'||cenario1[xy+1][yy]=='#'){
-	// 		xy--;
-	// 		cenario1[xy][yy]='y';
-	// 		return;
-	// 	}
-	// 	xy++;
-	// 	cenario1[xy][yy]='y';
-		// direita
-	// }
-	// else if (y==yy&&x<xy){
-	// 	if (cenario1[xy-1][yy]=='*'||cenario1[xy-1][yy]=='#'){
-	// 		xy++;
-	// 		cenario1[xy][yy]='y';
-	// 		return;
-	// 	}
-	// 	xy--;
-	// 	cenario1[xy][yy]='y';
-		// esquerda
-	// }
-	// else{
-		/*
-		do{
-		   	xy= 1+(rand()%10);
-			yy= 1+(rand()%10);
-		}while (cenario1[xy][yy]==' '); ideia de monstro que ue preciso
-		entender sobre como funciona 
-		*/
-		
-		// for (i=1;i<10;i++){
-		// 	
-		// }
-	// }
-	
 	while (1){
 		if (cenario1[xy][yy+1] == '#' || cenario1[xy][yy+1] == '*'){
 			yy--;
@@ -240,7 +201,7 @@ void bixo2(){
 			continue;
 		}
 		
-		if ( ( ( abs(xy - x) ) > ( abs(yy - y) ) ) && ( abs(xy-x) <= 2)) {
+		if ( ( ( abs(xy - x) ) > ( abs(yy - y) ) ) && ( abs(xy-x) <= 3)) {
 			if (xy < x) xy++;
 			else xy--;
 		}
