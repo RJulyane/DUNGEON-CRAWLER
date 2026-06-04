@@ -4,7 +4,6 @@
 #include <time.h>
 #include <string.h>
 #include <windows.h>
-#include <unistd.h>
 
 //fazer alguma coisinha legal com a ressucitação ali 
 // posso fazer um void só pra colocar espinhos, pra evitar que eles sumam
@@ -15,7 +14,7 @@ int tamanhoc=11;
 char cenario1[11][11];
 
 int x=5, y=6;
-int x0=5, y0=6;
+int xinicial=5, yinicial=6;
 int xx=9, yx=1, bixox;
 int bx1=9, by1=1;
 int xy=1, yy=9, bixoy;
@@ -71,8 +70,8 @@ void reiniciar(){
 	
 	vidas--;
 	
-	x= x0;
-	y= y0;
+	x= xinicial;
+	y= yinicial;
 	xx=bx1;
 	yx=by1;
 	xy=bx2;
@@ -233,26 +232,8 @@ void bixo2(){
 	condicaoMorte();
 	
 }
-int main(){
-	srand(0);
-	cenario1[xx][yx]='x';
-	cenario1[xy][yy]='y';
-	for (i=0;i<tamanhol;i++){
-		for(j=0;j<tamanhoc;j++){
-			if (i==tamanhol || j==tamanhoc){
-				cenario1[j][i]='*';
-			}
-			else if( i==0 || j==0 || i==tamanhol-1 || j==tamanhoc-1){
-				cenario1[j][i]='*';
-			}
-			else{
-				cenario1[j][i]=' ';
-			}
-		}
-	}
-	
-	
-	while (vidas>0){
+void tutorial(){
+    while (vidas>0){
 		if (_kbhit()&&MORTE==0){
 			char key = _getch();
 			if (key == 27) break;
@@ -272,6 +253,53 @@ int main(){
 		MORTE=0;// talvez isso de problemak
 		
 	}
+}
+int main(){
+	srand(time(0));
+    
+	while (key!=27){
+        int decisao=0;
+        char opcoes[3][20]={"Jornada", "Treinamento", "Abandonar reino"};
+        system("cls");
+        system("cls");
+        printf("  _____  _    _ _   _  _____ ______ ____  _   _ \n");
+        printf(" |  __ \\| |  | | \\ | |/ ____|  ____/ __ \\| \\ | |\n");
+        printf(" | |  | | |  | |  \\| | |  __| |__ | |  | |  \\| |\n");
+        printf(" | |  | | |  | | . ` | | |_ |  __|| |  | | . ` |\n");
+        printf(" | |__| | |__| | |\\  | |__| | |___| |__| | |\\  |\n");
+        printf(" |_____/ \\____/|_| \\_|\\_____|______\\____/|_| \\_|\n");
+        printf("Esta preparado?\n");
+        printf("<- %s ->\n", opcoes[decisao]);
+        
+        while (1){
+            key = _getch();
+            if (key==13) break;
+            if (key=='d'){
+                if (decisao<2) decisao++;
+            }
+            else if(key=='a'){
+                if (decisao>0) decisao--;
+            }
+            else continue;
+
+            printf("\033[1A");
+            printf("\033[2K");
+            printf("<- %s ->\n", opcoes[decisao]);
+        }
+        if (decisao==0){//jornada
+            system("cls");
+        }
+        else if (decisao==1){//treinamento
+            system("cls");
+            tutorial();
+        }
+        else{// abandonar reino
+            system("cls");
+        }
+    }
+
+	
+	
 		
     return 0;
 }
