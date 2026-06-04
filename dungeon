@@ -4,9 +4,10 @@
 #include <time.h>
 #include <string.h>
 #include <windows.h>
+#include <unistd.h>
 
-// lembrar de colocar que o 0 significa que o monstro comeu o jogador, e gamer over
 //fazer alguma coisinha legal com a ressucitação ali 
+// posso fazer um void só pra colocar espinhos, pra evitar que eles sumam
 
 int tamanhol=11;
 int tamanhoc=11;
@@ -29,6 +30,29 @@ char MORTEc[5]= "vivo";
 
 char causas[]={'x', '#', 'y', 'z'};
 
+void msgmorte(){
+	system("cls");
+	printf(" __      ______   _____ ______ \n");
+	printf(" \\ \\    / / __ \\ / ____|  ____|\n");
+	printf("  \\ \\  / / |  | | |    | |__   \n");
+	printf("   \\ \\/ /| |  | | |    |  __|  \n");
+	printf("    \\  / | |__| | |____| |____ \n");
+	printf("     \\/   \\____/ \\_____|______|\n");
+	printf("                               \n");
+	printf("  __  __  ___  ____  ____  _____ _   _ \n");
+	printf(" |  \\/  |/ _ \\|  _ \\|  _ \\| ____| | | |\n");
+	printf(" | |\\/| | | | | |_) | |_) |  _| | | | |\n");
+	printf(" | |  | | |_| |  _ <|  _ <| |___| |_| |\n");
+	printf(" |_|  |_|\\___/|_| \\_\\_| \\_\\_____|\\___/ \n");
+	printf("                                       \n");
+    printf("+-+     +-+ +-----+ +-+  +-++-+  +-++------+ +-----+ \n");
+    if (vidas>1){
+		printf("Mais uma vez ^^");
+	}
+	Sleep(3000);
+	system("cls");
+	
+}
 void cenario(){
 	for (i=0;i<tamanhol;i++){
 		for(j=0;j<tamanhoc;j++){
@@ -36,6 +60,25 @@ void cenario(){
 		}
 		printf("\n");
 	}
+	cenario1[5][4]='#';
+}
+void reiniciar(){
+	cenario1[x][y]=' ';
+	cenario1[xx][yx]=' ';
+	cenario1[xy][yy]=' ';
+	
+	vidas--;
+	
+	x= x0;
+	y= y0;
+	xx=bx1;
+	yx=by1;
+	xy=bx2;
+	yy=by2;
+	
+	cenario1[x][y]='^';
+	cenario1[xx][yx]='x';
+	cenario1[xy][yy]='y';
 }
 
 void condicaoMorte(){
@@ -54,35 +97,21 @@ void condicaoMorte(){
 		return;
 	}
 	*/
-	void reiniciar(){
-		cenario1[x][y]=' ';
-		cenario1[xx][yx]=' ';
-		cenario1[xy][yy]=' ';
-		
-		vidas--;
-		
-		x= x0;
-		y= y0;
-		xx=bx1;
-		yx=by1;
-		xy=bx2;
-		yy=by2;
-		
-		cenario1[x][y]='^';
-		cenario1[xx][yx]='x';
-		cenario1[xy][yy]='y';
-	}
 		
 	if (x==xx&&y==yx){
 		reiniciar();
+		msgmorte();
 		return;
 	} 
 	if (x==xy&&y==yy){
 		reiniciar();
+		msgmorte();
 		return;
 	}
 	if (cenario1[x][y] == '#'){
 		reiniciar();
+		msgmorte();
+		cenario1[5][4]='#';
 		return;
 	}
 }
@@ -178,8 +207,9 @@ void bixo(){
 		
 }
 void bixo2(){
-	cenario1[xy][yy]=' ';
+	
 	condicaoMorte();
+	cenario1[xy][yy]=' ';
 	bixoy= (rand()%2);
 	
 	while (1){
