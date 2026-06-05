@@ -114,7 +114,7 @@ void condicaoMorte(){
 
 void acao(char key){
 	
-	condicaoMorte();
+	//condicaoMorte();
 	switch(key)
 	{
 	case 's':
@@ -124,6 +124,7 @@ void acao(char key){
 		cenario1[x][y]=' ';
 		y++;
 		cenario1[x][y]='v';	
+        condicaoMorte();
 		break;
 	case 'w':
 		if (cenario1[x][y-1]=='*'){
@@ -132,6 +133,7 @@ void acao(char key){
 		cenario1[x][y]=' ';
 		y--;
 		cenario1[x][y]='^';	
+        condicaoMorte();
 		break;
 	case 'd':
 		if (cenario1[x+1][y]=='*'){
@@ -140,6 +142,7 @@ void acao(char key){
 		cenario1[x][y]=' ';
 		x++;
 		cenario1[x][y]='>';
+        condicaoMorte();
 		break;
 	case 'a':
 		if (cenario1[x-1][y]=='*'){
@@ -148,6 +151,7 @@ void acao(char key){
 		cenario1[x][y]=' ';
 		x--;
 		cenario1[x][y]='<';	
+        condicaoMorte();
 		break;
 	default:
 		break;
@@ -246,7 +250,10 @@ void bixo2(){
 void tutorial(){
     while (vidas>0){
 		char key = _getch();
-		if (key == 27) break;
+		if (key == 27){
+            key=0;    
+            break;
+        }
         system("cls");
             
         cenario1[5][4]='#';
