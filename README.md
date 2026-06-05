@@ -20,10 +20,7 @@ Você é **Kael** — um jovem aventureiro sem fama e sem treinamento formal, cr
 
 | Nome | GitHub |
 |------|--------|
-| [Seu Nome Aqui] | [@usuario](https://github.com/usuario) |
-| [Nome do Colega] | [@usuario2](https://github.com/usuario2) |
-| [Nome do Colega] | [@usuario3](https://github.com/usuario3) |
-
+| [Julyane Ribeiro] | [@usuario](https://github.com/Rjulyane) |
 ---
 
 ## 🎮 Como Jogar
@@ -100,7 +97,7 @@ Este projeto utilizou IA generativa (Claude, da Anthropic) como ferramenta de ap
 - **Dúvidas pontuais:** esclarecimento de comportamentos do C e funções de biblioteca
 - **Criação da história:** geração do lore e narrativa do jogo
 
-Todo o código foi compreendido, revisado e é de total responsabilidade da equipe. Nenhum trecho foi utilizado sem entendimento prévio de seu funcionamento.
+Todo o código foi compreendido, revisado e é de total responsabilidade da criadora. Nenhum trecho foi utilizado sem entendimento prévio de seu funcionamento.
 
 ---
 
@@ -121,4 +118,4 @@ gcc joguitto.c -o joguitto.exe
 
 ---
 
-*Projeto desenvolvido para a disciplina de Introdução à Programação — 2025*
+*Projeto desenvolvido para a disciplina de Codificação de sistemas — 2026*
