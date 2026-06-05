@@ -55,13 +55,24 @@ void msgmorte(){
 	system("cls");
 }
 void cenario(){
-	for (i=0;i<tamanhol;i++){
+	for (i=0; i<tamanhol; i++){
+        for (j=0; j<tamanhoc; j++){
+            if (i==0 || j==0 || i==tamanhol-1 || j==tamanhoc-1)
+                cenario1[j][i]='*';
+            else
+                cenario1[j][i]=' ';
+        }
+    }
+    cenario1[5][4]='#';
+    cenario1[x][y]='^'; 
+    cenario1[xx][yx]='x';
+    cenario1[xy][yy]='y';
+    for (i=0;i<tamanhol;i++){
 		for(j=0;j<tamanhoc;j++){
 			printf("%c", cenario1[j][i]);
 		}
 		printf("\n");
 	}
-	cenario1[5][4]='#';
 }
 void reiniciar(){
 	cenario1[x][y]=' ';
@@ -234,22 +245,19 @@ void bixo2(){
 }
 void tutorial(){
     while (vidas>0){
-		if (_kbhit()&&MORTE==0){
-			char key = _getch();
-			if (key == 27) break;
+		char key = _getch();
+		if (key == 27) break;
+        system("cls");
+            
+        cenario1[5][4]='#';
 			
-			cenario1[5][4]='#';
-			acao(key);
-			bixo();
-			bixo2();
-			system("cls");
-			printf(">> Y: %d, %d | >> P: %d, %d -> ( %d ) | ( %d )\n", xy, yy, x, y, xy - x, yy - y);
-			//condicaoMorte(x, y);
-			//if (MORTE==1) break;
-			cenario();
+		acao(key);
+		bixo();
+		bixo2();
 			
-			printf("vidas= %d \n", vidas);			
-		}
+        cenario();
+		printf("vidas= %d \n", vidas);			
+	
 		MORTE=0;// talvez isso de problemak
 		
 	}
@@ -273,7 +281,7 @@ int main(){
         
         while (1){
             key = _getch();
-            if (key==13) break;
+            if (key==13)break; 
             if (key=='d'){
                 if (decisao<2) decisao++;
             }
@@ -290,16 +298,17 @@ int main(){
             system("cls");
         }
         else if (decisao==1){//treinamento
+            xinicial=5, yinicial=6;// posição inicial, do personagem
+            bx1=9, by1=1;// posição inicial, do x
+            bx2=1, by2=9;// posição inicial, do y
             system("cls");
+            acao();
             tutorial();
         }
         else{// abandonar reino
             system("cls");
         }
+        key = _getch();
     }
-
-	
-	
-		
     return 0;
 }
