@@ -1,18 +1,40 @@
-# 🗡️ Dungeon Crawler — A Última Chama de Aetherfall
+# 🗡️ Dungeon Crawler — O Grande Narrador
 
-> *"Não volte sem o Cristal, Kael. Ou não volte."*
+> *"Ah, mais um herói. Que surpresa. Que... originalidade."*
 
 ---
 
 ## 📖 História
 
-O reino de **Aetherfall** viveu séculos de paz graças ao **Cristal da Aurora**, um artefato lendário que mantinha os males das trevas afastados das terras dos homens.
+Uma voz aparece na tela. Ela te guia pela vila, te apresenta o ferreiro, te ensina os controles.
 
-Há três dias, o céu escureceu.
+> *"Pegue a espada. Ou o arco. Ou o cajado. Tanto faz, honestamente."*
 
-**Malgrath, o Devorador**, acordou nas profundezas da Masmorra de Cinzas e corrompeu o Cristal. As colheitas murcharam, os animais fugiram e os aldeões adoeceram lentamente. Os guerreiros enviados para enfrentá-lo nunca voltaram.
+Você desce para a masmorra.
 
-Você é **Kael** — um jovem aventureiro sem fama e sem treinamento formal, criado na pequena vila de **Miravel**. Sem nada a perder, você pega sua arma e desce às profundezas para recuperar o Cristal e salvar o reino.
+Primeiro andar. Você morre no espinho.
+
+> *"Aquele estava bem na sua frente. Impressionante."*
+
+Segundo andar. Um monstro te encurrala.
+
+> *"Fascinante. Você foi em direção a ele. Voluntariamente."*
+
+Terceiro andar. Suas vidas acabam.
+
+> *"Haha. Suas vidas acabaram! Não se preocupe, reiniciei tudo pra você. Sou tão generoso."*
+
+Você chega na sala final.
+
+> *"Parabéns. Você chegou até aqui. Eu deixei, claro — precisava de entretenimento."*
+>
+> *"Os monstros? Meus. Os espinhos? Meus. O Cristal que você veio buscar? Também meu. Sempre foi."*
+>
+> *"Mas foi divertido te ver tentar. De verdade."*
+
+O Narrador não quer destruir o reino, não quer poder, não quer nada grandioso. **Ele só quer se divertir.** E você acabou de ser o melhor espetáculo da semana.
+
+> *"Pressione qualquer tecla para jogar de novo. Vai lá. Tenho tempo."*
 
 ---
 
@@ -20,13 +42,16 @@ Você é **Kael** — um jovem aventureiro sem fama e sem treinamento formal, cr
 
 | Nome | GitHub |
 |------|--------|
-| [Julyane Ribeiro] | [@usuario](https://github.com/Rjulyane) |
+| Julyane Ribeiro | [@Rjulyane](https://github.com/Rjulyane) |
+
 ---
 
 ## 🎮 Como Jogar
 
 ### Objetivo
-Explore a vila, escolha sua arma, atravesse os 3 andares da masmorra e derrote **Malgrath** para restaurar o Cristal da Aurora.
+Siga a voz do Narrador. Explore a vila, escolha sua arma, atravesse os 3 andares da masmorra e chegue até o boss final.
+
+Mas cuidado com quem você confia.
 
 ### Controles
 
@@ -58,12 +83,12 @@ Você possui **3 vidas**. Ao colidir com espinhos ou ser tocado por um monstro, 
 ```
 Menu Principal
 ├── Jornada
-│   ├── Vila de Miravel (10×10)
-│   │   └── NPC Aldric — escolha sua arma
-│   ├── 1º Andar — O Vestíbulo Esquecido (10×10)
-│   ├── 2º Andar — As Catacumbas Corrompidas (15×15)
-│   └── 3º Andar — O Trono das Cinzas (25×25)
-│       └── Boss: Malgrath, o Devorador
+│   ├── Vila (10×10)
+│   │   └── Ferreiro — escolha sua arma
+│   ├── 1º Andar — O Vestíbulo (10×10)
+│   ├── 2º Andar — As Catacumbas (15×15)
+│   └── 3º Andar — A Sala do Narrador (25×25)
+│       └── Boss: O Narrador
 ├── Treinamento
 └── Sair
 ```
@@ -85,37 +110,32 @@ Menu Principal
 | `L` | Escada — avança para o próximo andar |
 | `X` | Monstro Tipo 1 — movimento aleatório |
 | `Y` | Monstro Tipo 2 — persegue o jogador |
-| `Z` | Boss Final — Malgrath |
+| `Z` | Boss Final — O Narrador |
 
 ---
 
 ## 🤖 Uso de IA Generativa
 
-Este projeto utilizou IA generativa (Claude, da Anthropic) como ferramenta de apoio ao desenvolvimento nas seguintes situações:
+Este projeto utilizou IA generativa (Claude, da Anthropic) como ferramenta de apoio nas seguintes situações:
 
 - **Depuração de código:** identificação de bugs e explicação dos erros
 - **Dúvidas pontuais:** esclarecimento de comportamentos do C e funções de biblioteca
 - **Criação da história:** geração do lore e narrativa do jogo
 
-Todo o código foi compreendido, revisado e é de total responsabilidade da criadora. Nenhum trecho foi utilizado sem entendimento prévio de seu funcionamento.
+Todo o código foi compreendido, revisado e é de total responsabilidade da equipe.
 
 ---
 
 ## 🛠️ Como Compilar
 
-### Pré-requisitos
-- GCC instalado (MinGW no Windows)
-
-### Compilação
 ```bash
 gcc joguitto.c -o joguitto.exe
 ```
 
-### Execução
 ```bash
 .\joguitto.exe
 ```
 
 ---
 
-*Projeto desenvolvido para a disciplina de Codificação de sistemas — 2026*
+*Projeto desenvolvido para a disciplina de Introdução à Programação — 2025*
