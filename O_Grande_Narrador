@@ -1,0 +1,351 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <time.h>
+#include <string.h>
+#include <windows.h>
+
+int tamanhol=11;
+int tamanhoc=11;
+
+char cenario1[11][11];
+
+int x=5, y=6;
+int xinicial=5, yinicial=6;
+int xx=9, yx=1, bixox;
+int bx1=9, by1=1;
+int xy=1, yy=9, bixoy;
+int bx2=1, by2=9;
+int i, j;
+
+int vidas=3;
+int condicao='a';
+
+int MORTE=0;
+char MORTEc[5]= "vivo";
+char key;
+
+char causas[]={'x', '#', 'y', 'z'};
+
+void msgmorte(){
+    key = 0; // Reseta a tecla para não sair direto do loop
+    while (key!=13){
+        system("cls");
+        printf(" __      ______   _____ ______ \n");
+        printf(" \\ \\    / / __ \\ / ____|  ____|\n");
+        printf("  \\ \\  / / |  | | |    | |__   \n");
+        printf("   \\ \\/ /| |  | | |    |  __|  \n");
+        printf("    \\  / | |__| | |____| |____ \n");
+        printf("     \\/   \\____/ \\_____|______|\n");
+        printf("                               \n");
+        printf("  __  __  ___  ____  ____  _____ _   _ \n");
+        printf(" |  \\/  |/ _ \\|  _ \\|  _ \\| ____| | | |\n");
+        printf(" | |\\/| | | | | |_) | |_) |  _| | | | |\n");
+        printf(" | |  | | |_| |  _ <|  _ <| |___| |_| |\n");
+        printf(" |_|  |_|\\___/|_| \\_\\_| \\_\\_____|\\___/ \n");
+        printf("                                       \n");
+        if (vidas>0){ // Ajustado para >0 ja que a vida ja foi perdida
+            printf("Narrador: Mais uma vez ^^\nDe 'enter' para continuar");
+        }
+        key = _getch();
+    }
+    system("cls");
+}
+void gameover(){
+    printf("  ____    _    __  __ _____ \n");
+        printf(" / ___|  / \\  |  \\/  | ____|\n");
+        printf("| |  _  / _ \\ | |\\/| |  _|  \n");
+        printf("| |_| |/ ___ \\| |  | | |___ \n");
+        printf(" \\____/_/   \\_\\_|  |_|_____|\n");
+        printf("                             \n");
+        printf("  ______      ________ _____  \n");
+        printf(" / __ \\ \\    / /  ____|  __ \\ \n");
+        printf("| |  | |\\ \\  / /| |__  | |__) |\n");
+        printf("| |  | | \\ \\/ / |  __| |  _  / \n");
+        printf("| |__| |  \\  /  | |____| | \\ \\ \n");
+        printf(" \\____/    \\/   |______|_|  \\_\\\n");
+        printf("Narrador: HAHAHA Suas vidas acabaram pequeno.\n");
+        printf("Narrador: melhore na proxima..")
+        _getch();
+}
+
+void iniciocenario1(){
+    for (i=0; i<tamanhol; i++){
+        for (j=0; j<tamanhoc; j++){
+            if (i==0 || j==0 || i==tamanhol-1 || j==tamanhoc-1)
+                cenario1[j][i]='*';
+            else
+                cenario1[j][i]=' ';
+        }
+    }
+}
+
+void cenario(){
+    // Garante que o espinho fixo sempre seja colocado antes de desenhar
+    cenario1[5][4]='#';
+    
+    // Insere os elementos móveis nas posições atuais antes do print
+    cenario1[xx][yx]='x';
+    cenario1[xy][yy]='y';
+    
+    for (i=0;i<tamanhol;i++){
+        for(j=0;j<tamanhoc;j++){
+            printf("%c", cenario1[j][i]);
+        }
+        printf("\n");
+    }
+}
+
+void reiniciar(){
+    cenario1[x][y]=' ';
+    cenario1[xx][yx]=' ';
+    cenario1[xy][yy]=' ';
+    
+    vidas--;
+    
+    x= xinicial;
+    y= yinicial;
+    xx=bx1;
+    yx=by1;
+    xy=bx2;
+    yy=by2;
+    
+    cenario1[x][y]='^';
+    cenario1[xx][yx]='x';
+    cenario1[xy][yy]='y';
+}
+
+void condicaoMorte(){
+    if (x==xx && y==yx){
+        reiniciar();
+        msgmorte();
+        return;
+    } 
+    if (x==xy && y==yy){
+        reiniciar();
+        msgmorte();
+        return;
+    }
+    // Como o espinho é fixo, checamos se o jogador pisou na coordenada dele (5,4)
+    if (x == 5 && y == 4){
+        reiniciar();
+        msgmorte();
+        return;
+    }
+}
+
+void acao(char key){
+    switch(key)
+    {
+    case 's':
+        if (cenario1[x][y+1]=='*'){
+            return;
+        }
+        cenario1[x][y]=' ';
+        y++;
+        cenario1[x][y]='v'; 
+        condicaoMorte();
+        break;
+    case 'w':
+        if (cenario1[x][y-1]=='*'){
+            return;
+        }
+        cenario1[x][y]=' ';
+        y--;
+        cenario1[x][y]='^'; 
+        condicaoMorte();
+        break;
+    case 'd':
+        if (cenario1[x+1][y]=='*'){
+            return;
+        }
+        cenario1[x][y]=' ';
+        x++;
+        cenario1[x][y]='>';
+        condicaoMorte();
+        break;
+    case 'a':
+        if (cenario1[x-1][y]=='*'){
+            return;
+        }
+        cenario1[x][y]=' ';
+        x--;
+        cenario1[x][y]='<'; 
+        condicaoMorte();
+        break;
+    default:
+        break;
+    }
+}
+
+void bixo(){
+    bixox= (rand()%4);
+    cenario1[xx][yx]=' '; 
+    condicaoMorte();
+    switch(bixox){
+    case 0:
+        if (cenario1[xx][yx-1]=='*'||cenario1[xx][yx-1]=='#'){
+            yx++;
+            cenario1[xx][yx]='x';
+            return;
+        }
+        yx--;
+        cenario1[xx][yx]='x';
+        break;
+    case 1:
+        if (cenario1[xx][yx+1]=='*'||cenario1[xx][yx+1]=='#'){
+            yx--;
+            cenario1[xx][yx]='x';
+            return;
+        }
+        yx++;
+        cenario1[xx][yx]='x';
+        break;
+    case 2:
+        if (cenario1[xx+1][yx]=='*'||cenario1[xx+1][yx]=='#'){
+            xx--;
+            cenario1[xx][yx]='x';
+            return;
+        }
+        xx++;
+        cenario1[xx][yx]='x';
+        break;
+    default:
+        if (cenario1[xx-1][yx]=='*'||cenario1[xx-1][yx]=='#'){
+            xx++;
+            cenario1[xx][yx]='x';
+            return;
+        }
+        xx--;
+        cenario1[xx][yx]='x';
+        break;  
+    }
+    condicaoMorte();
+}
+
+void bixo2(){
+    condicaoMorte();
+    cenario1[xy][yy]=' ';
+    bixoy= (rand()%2);
+    
+    while (1){
+        if (cenario1[xy][yy+1] == '#' || cenario1[xy][yy+1] == '*'){
+            yy--;
+            continue;
+        }
+        if (cenario1[xy][yy-1] == '#' || cenario1[xy][yy-1] == '*'){
+            yy++;
+            continue;
+        }
+        if (cenario1[xy+1][yy] == '#' || cenario1[xy+1][yy] == '*'){
+            xy--;
+            continue;
+        }
+        if (cenario1[xy-1][yy] == '#' || cenario1[xy-1][yy] == '*'){
+            xy++;
+            continue;
+        }
+        
+        if ( ( ( abs(xy - x) ) > ( abs(yy - y) ) ) && ( abs(xy-x) <= 3)) {
+            if (xy < x) xy++;
+            else xy--;
+        }
+        else {
+            if (yy <= y) yy++;
+            else yy--;
+        }
+        break;
+    }
+    cenario1[xy][yy] = 'y';
+    condicaoMorte();
+}
+
+void tutorial(){
+    // Inicializa o personagem olhando para cima no começo do jogo
+    cenario1[x][y] = '^'; 
+    
+    while (vidas > 0){
+        system("cls");
+        cenario();
+        printf("vidas= %d \n", vidas);          
+        
+        char key = _getch();
+        if (key == 27){ // ESC para sair
+            break;
+        }
+            
+        acao(key);
+        bixo();
+        bixo2();
+        
+        MORTE=0;
+    }
+    
+    if(vidas <= 0){
+        system("cls");
+        gameover();
+    }
+}
+
+void posicaoinicio(){
+    x=xinicial;
+    y=yinicial;
+    xx=bx1; yx=by1;
+    xy=bx2; yy=by2;
+}
+
+int main(){
+    srand(time(0));
+    
+    while (key!=27){
+        int decisao=0;
+        char opcoes[3][20]={"Jornada", "Treinamento", "Abandonar reino"};
+        system("cls");
+        printf("  _____  _    _ _   _  _____ ______ ____  _   _ \n");
+        printf(" |  __ \\| |  | | \\ | |/ ____|  ____/ __ \\| \\ | |\n");
+        printf(" | |  | | |  | |  \\| | |  __| |__ | |  | |  \\| |\n");
+        printf(" | |  | | |  | | . ` | | |_ |  __|| |  | | . ` |\n");
+        printf(" | |__| | |__| | |\\  | |__| | |___| |__| | |\\  |\n");
+        printf(" |_____/ \\____/|_| \\_|\\_____|______\\____/|_| \\_|\n");
+        printf("Narrador: Esta preparado?\n");
+        printf("<- %s ->\n", opcoes[decisao]);
+        
+        while (1){
+            key = _getch();
+            if (key==13) break; 
+            if (key=='d'){
+                if (decisao<2) decisao++;
+            }
+            else if(key=='a'){
+                if (decisao>0) decisao--;
+            }
+            else continue;
+
+            printf("\033[1A");
+            printf("\033[2K");
+            printf("<- %s ->\n", opcoes[decisao]);
+        }
+        if (decisao==0){//jornada
+            system("cls");
+            printf("Modo Jornada em desenvolvimento...\n");
+            _getch();
+        }
+        else if (decisao==1){//treinamento
+            vidas = 3; // Reinicia as vidas ao entrar no treino
+            xinicial=5, yinicial=6;
+            bx1=9, by1=1;
+            bx2=1, by2=9;
+            system("cls");
+            iniciocenario1();
+            posicaoinicio();
+            tutorial();
+        }
+        else{// abandonar reino
+            system("cls");
+            printf("Narrador: DESISTIU? que inutil e sem graça")
+            printf("Saindo do jogo...\n");
+            return 0;
+        }
+    }
+    return 0;
+}
