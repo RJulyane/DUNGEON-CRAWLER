@@ -126,16 +126,6 @@ Todo o código foi compreendido, revisado e é de total responsabilidade da equi
 
 ---
 
-## 🛠️ Como Compilar
 
-```bash
-gcc joguitto.c -o joguitto.exe
-```
 
-```bash
-.\joguitto.exe
-```
-
----
-
-*Projeto desenvolvido para a disciplina de Introdução à Programação — 2025*
+*Projeto desenvolvido para a disciplina de Algoritmo e Codificação de Sistemas — 2026*
