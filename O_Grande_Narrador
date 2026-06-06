@@ -342,7 +342,7 @@ int main(){
         }
         else{// abandonar reino
             system("cls");
-            printf("Narrador: DESISTIU? que inutil e sem graça")
+            printf("Narrador: DESISTIU? que inutil e sem graça");
             printf("Saindo do jogo...\n");
             return 0;
         }
