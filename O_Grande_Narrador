@@ -142,9 +142,15 @@ void cenario(){
         
         // Insere apenas o jogador (monstros desativados nesta sala) e armas
         cenario1[x][y]=condicao;
-        cenario1[2][2]='i';//cajado
-        cenario1[4][2]='f';//espada
-        cenario1[6][2]='+';//flechas
+        if (arma!=1){
+            cenario1[4][2]='f';//espada
+        }
+        if (arma!=2){
+            cenario1[6][2]='+';//flechas
+        }
+        if (arma!=3){
+            cenario1[2][2]='i';//cajado
+        }        
         cenario1[4][4]='V';//npc
                
         // Imprime a Sala 1 na tela
@@ -190,8 +196,9 @@ void acao(char key){
         else if(cenario1[x][y+1]=='='){
             y++;
             condicao='v';
+            system("cls");
             printf("\nNarrador: eu que deixei, ta?\n");
-            Sleep(1000); 
+            _getch();
         }
         else {
             y++;
@@ -208,8 +215,9 @@ void acao(char key){
         else if(cenario1[x][y-1]=='='){
             y--;
             condicao='^';
+            system("cls");
             printf("\nNarrador: eu que deixei, ta?\n");
-            Sleep(1000);
+            _getch();
         }
         else {
             y--;
@@ -226,8 +234,9 @@ void acao(char key){
         else if(cenario1[x+1][y]=='='){
             x++;
             condicao='>';
+            system("cls");
             printf("\nNarrador: eu que deixei, ta?\n");
-            Sleep(1000);
+            _getch();
         }
         else {
             x++;
@@ -244,8 +253,9 @@ void acao(char key){
         else if(cenario1[x-1][y]=='='){
             x--;
             condicao='<';
+            system("cls");
             printf("\nNarrador: eu que deixei, ta?\n");
-            Sleep(1000);
+            _getch();
         }
         else {
             x--;
@@ -319,17 +329,35 @@ void inve(char tecla_apertada) {
     if (tecla_apertada=='e'||tecla_apertada=='E'){
         if (cenario1[frentex][frentey]=='f'){
             strcpy(inventario[0], "Espada"); arma=1;
+            system("cls");
             printf("V(ferreiro): isso e uma espada, pode atacar uma unidade na sua frente");
+            printf("\n  o");
+            printf("\n  ^");
+            
+            _getch();
             cenario1[frentex][frentey]=' ';
         }
         else if (cenario1[frentex][frentey]=='+'){
             strcpy(inventario[0], "Arco"); arma=2;
+            system("cls");
             printf("V(ferreiro): isso e um arco, pode atacar a sua frente, ate encontrar um obstaculo");
+            printf("\n  x");
+            printf("\n  o");
+            printf("\n  o");
+            printf("\n  o");
+            printf("\n  o");
+            printf("\n  ^");
+            _getch();
             cenario1[frentex][frentey]=' ';
         }
         else if (cenario1[frentex][frentey]=='i'){
             strcpy(inventario[0], "Cajado"); arma=3;
+            system("cls");
             printf("V(ferreiro): isso e um cajado, pode atacar a sua volta");
+            printf("\no o o");
+            printf("\no ^ o");
+            printf("\no o o");
+            _getch();
             cenario1[frentex][frentey]=' ';
         }
         else if (cenario1[frentex][frentey]=='@'){
@@ -441,6 +469,16 @@ int main(){
         }
         if (decisao==0){ 
             system("cls");
+            vidas = 3; 
+            xinicial=5, yinicial=6;
+            bx1=9, by1=1;
+            bx2=1, by2=9;
+            arma=0;
+            chave=0;
+
+            tamanhol=15;
+            tamanhoc=15;
+            lugar=0;
             printf("Modo Jornada em desenvolvimento...\n");
             _getch();
         }
@@ -457,10 +495,12 @@ int main(){
             lugar=0;
             
             system("cls");
-            printf("Narrador: cheiro de iniciante... que coragem\n");
-            printf("Narrador: como deve imaginar W, A, S, D sao para movimento\n");
-            printf("Narrador: E interage, I inventario, por fim, O ataca, se voce conseguir haha\n");
-            Sleep(3000);
+            while (key!=13){
+                printf("Narrador: cheiro de iniciante... que coragem\n");
+                printf("Narrador: como deve imaginar W, A, S, D sao para movimento\n");
+                printf("Narrador: E interage, I inventario, por fim, O ataca, se voce conseguir haha\n");
+                
+            }
             system("cls");
             
             iniciocenario1();
