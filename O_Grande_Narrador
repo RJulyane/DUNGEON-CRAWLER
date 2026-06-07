@@ -89,7 +89,6 @@ void iniciocenario1(){
 void cenario(){
     //espinho e chave fixas
     cenario1[5][4]='#';
-    cenario1[5][5]='@';
     
     // Insere os elementos móveis nas posições atuais antes do print
     cenario1[xx][yx]='x';
@@ -292,7 +291,7 @@ void inve(char tecla_apertada) {
         }
         else if (cenario1[frentex][frentey]=='@'){
             strcpy(inventario[1], "Chave");
-            cenario1[frentex][frentey]==' '
+            cenario1[frentex][frentey]=' ';
             
         }
         system("cls");
@@ -396,16 +395,13 @@ int main(){
             
             system("cls");
             printf("Narrador: cheiro de iniciante... que coragem\n");
-            printf("Narrador: como deve imaginar w, a, s, d são para movimento\n");
-            printf("Narrador: e, e interage, i inventario, por fim, o ataca, se voce conseguir haha");
-            Sleep(3000);
-            system("cls");
-            
-            printf("Narador: boa sorte. . . ");
+            printf("Narrador: como deve imaginar W, A, S, D são para movimento\n");
+            printf("Narrador: E interage, I inventario, por fim, O ataca, se voce conseguir haha");
             Sleep(3000);
             system("cls");
             
             iniciocenario1();
+            cenario1[5][5]='@';
             posicaoinicio();
             tutorial();
         }
