@@ -9,7 +9,7 @@ int tamanhol=11;
 int tamanhoc=11;
 int lugar=0;
 
-char cenario1[11][11];
+char cenario1[20][20];
 
 int x=5, y=6;
 int xinicial=5, yinicial=6;
@@ -65,13 +65,13 @@ void gameover(){
     printf(" / ___|  / \\  |  \\/  | ____|\n");
     printf("| |  _  / _ \\ | |\\/| |  _|  \n");
     printf("| |_| |/ ___ \\| |  | | |___ \n");
-    printf(" \\____/_/   \\_\\_|  |_|_____|\n");
+    printf("\\____/_/   \\_\\_|  |_|_____|\n");
     printf("                             \n");
-    printf("  ______      ________ _____  \n");
-    printf(" / __ \\ \\    / /  ____|  __ \\ \n");
+    printf("  ______         ________ _____  \n");
+    printf(" / __ \\ \\     / /  ____|  __ \\ \n");
     printf("| |  | |\\ \\  / /| |__  | |__) |\n");
-    printf("| |  | | Barnes / / |  __| |  _  / \n");
-    printf("| |__| |  \\  /  | |____| | \\ \\ \n");
+    printf("| |  | | \\ \\ / /|  __| |  _  / \n");
+    printf("| |__| |  \\   /  | |____| | \\ \\ \n");
     printf(" \\____/    \\/   |______|_|  \\_\\\n");
     printf("Narrador: HAHAHA Suas vidas acabaram pequeno.\n");
     printf("Narrador: melhore na proxima..\n"); 
@@ -92,8 +92,8 @@ void iniciocenario1(){
 
 void cenario(){
     // Limpa toda a matriz para evitar lixo de frames anteriores
-    for (i=0; i<11; i++){
-        for (j=0; j<11; j++){
+    for (i=0; i<tamanhoc; i++){
+        for (j=0; j<tamanhol; j++){
             cenario1[j][i]=' ';
         }
     }
@@ -140,9 +140,13 @@ void cenario(){
             }
         }
         
-        // Insere apenas o jogador (monstros desativados nesta sala)
+        // Insere apenas o jogador (monstros desativados nesta sala) e armas
         cenario1[x][y]=condicao;
-        
+        cenario1[2][2]='i';//cajado
+        cenario1[4][2]='f';//espada
+        cenario1[6][2]='+';//flechas
+        cenario1[4][4]='V';//npc
+               
         // Imprime a Sala 1 na tela
         for (i=0;i<tamanhol;i++){
             for(j=0;j<tamanhoc;j++){
@@ -306,17 +310,27 @@ void bixo2(){
     }
     condicaoMorte();
 }
-
+void ataque(){
+    if (arma==1){
+    // ai sla aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    }
+}
 void inve(char tecla_apertada) {
     if (tecla_apertada=='e'||tecla_apertada=='E'){
-        if (cenario1[frentex][frentey]=='M'){
+        if (cenario1[frentex][frentey]=='f'){
             strcpy(inventario[0], "Espada"); arma=1;
+            printf("V(ferreiro): isso e uma espada, pode atacar uma unidade na sua frente");
+            cenario1[frentex][frentey]=' ';
         }
-        else if (cenario1[frentex][frentey]=='M'){
+        else if (cenario1[frentex][frentey]=='+'){
             strcpy(inventario[0], "Arco"); arma=2;
+            printf("V(ferreiro): isso e um arco, pode atacar a sua frente, ate encontrar um obstaculo");
+            cenario1[frentex][frentey]=' ';
         }
-        else if (cenario1[frentex][frentey]=='M'){
+        else if (cenario1[frentex][frentey]=='i'){
             strcpy(inventario[0], "Cajado"); arma=3;
+            printf("V(ferreiro): isso e um cajado, pode atacar a sua volta");
+            cenario1[frentex][frentey]=' ';
         }
         else if (cenario1[frentex][frentey]=='@'){
             strcpy(inventario[1], "Chave");
@@ -327,7 +341,7 @@ void inve(char tecla_apertada) {
                 strcpy(inventario[1], "NADA");
                 chave=0;
                 lugar=1; 
-                Sleep(1000);
+                Sleep(500);
                 cenario1[frentex][frentey]='=';
                 Sleep(1000);
                 iniciocenario1();
