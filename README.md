@@ -116,7 +116,7 @@ Menu Principal
 
 ## 🤖 Uso de IA Generativa
 
-Este projeto utilizou IA generativa (Claude, da Anthropic) como ferramenta de apoio nas seguintes situações:
+Este projeto utilizou IA generativa (Claude, da Anthropic, e Gemini, da Google) como ferramenta de apoio nas seguintes situações:
 
 - **Depuração de código:** identificação de bugs e explicação dos erros
 - **Dúvidas pontuais:** esclarecimento de comportamentos do C e funções de biblioteca
