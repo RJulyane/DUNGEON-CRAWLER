@@ -7,6 +7,7 @@
 
 int tamanhol=11;
 int tamanhoc=11;
+int lugar=0;
 
 char cenario1[11][11];
 
@@ -69,46 +70,90 @@ void gameover(){
     printf("  ______      ________ _____  \n");
     printf(" / __ \\ \\    / /  ____|  __ \\ \n");
     printf("| |  | |\\ \\  / /| |__  | |__) |\n");
-    printf("| |  | | \\ \\/ / |  __| |  _  / \n");
+    printf("| |  | | Barnes / / |  __| |  _  / \n");
     printf("| |__| |  \\  /  | |____| | \\ \\ \n");
     printf(" \\____/    \\/   |______|_|  \\_\\\n");
     printf("Narrador: HAHAHA Suas vidas acabaram pequeno.\n");
-    printf("Narrador: melhore na proxima..\n"); // Ponto e vírgula adicionado aqui!
+    printf("Narrador: melhore na proxima..\n"); 
     _getch();
 }
 
+// Essa função agora apenas define os tamanhos iniciais de cada sala
 void iniciocenario1(){
-    for (i=0; i<tamanhol; i++){
-        for (j=0; j<tamanhoc; j++){
-            if (i==0 || j==0 || i==tamanhol-1 || j==tamanhoc-1)
-                cenario1[j][i]='*';
-            else
-                cenario1[j][i]=' ';
-        }
+    if (lugar==0){
+        tamanhol=11;
+        tamanhoc=11;
+    }
+    else if (lugar==1){
+        tamanhol=9;
+        tamanhoc=9;
     }
 }
 
 void cenario(){
-    //espinho fixo
-    cenario1[5][4]='#';
-    
-    // Insere os elementos móveis nas posições atuais antes do print
-    cenario1[xx][yx]='x';
-    cenario1[xy][yy]='y';
-    
-    for (i=0;i<tamanhol;i++){
-        for(j=0;j<tamanhoc;j++){
-            printf("%c", cenario1[j][i]);
+    // Limpa toda a matriz para evitar lixo de frames anteriores
+    for (i=0; i<11; i++){
+        for (j=0; j<11; j++){
+            cenario1[j][i]=' ';
         }
-        printf("\n");
+    }
+
+    if (lugar==0){
+        tamanhol=11;
+        tamanhoc=11;
+        
+        // Reconstrói as paredes da Sala 0
+        for (i=0; i<tamanhol; i++){
+            for (j=0; j<tamanhoc; j++){
+                if (i==0 || j==0 || i==tamanhol-1 || j==tamanhoc-1)
+                    cenario1[j][i]='*';
+            }
+        }
+        
+        // Coloca os objetos fixos e itens (se ainda não foram pegos)
+        cenario1[5][4]='#'; // Espinho
+        if (chave == 0) cenario1[5][5]='@'; // Chave
+        cenario1[10][2]='D'; // Porta
+        
+        // Insere as entidades móveis nas posições atuais
+        cenario1[xx][yx]='x';
+        cenario1[xy][yy]='y';
+        cenario1[x][y]=condicao; // Desenha o jogador com a seta certa (^, v, <, >)
+        
+        // Imprime a Sala 0 na tela
+        for (i=0;i<tamanhol;i++){
+            for(j=0;j<tamanhoc;j++){
+                printf("%c", cenario1[j][i]);
+            }
+            printf("\n");
+        }
+    }
+    else if (lugar==1){
+        tamanhol=9;
+        tamanhoc=9;
+        
+        // Reconstrói as paredes da Sala 1
+        for (i=0; i<tamanhol; i++){
+            for (j=0; j<tamanhoc; j++){
+                if (i==0 || j==0 || i==tamanhol-1 || j==tamanhoc-1)
+                    cenario1[j][i]='*';
+            }
+        }
+        
+        // Insere apenas o jogador (monstros desativados nesta sala)
+        cenario1[x][y]=condicao;
+        
+        // Imprime a Sala 1 na tela
+        for (i=0;i<tamanhol;i++){
+            for(j=0;j<tamanhoc;j++){
+                printf("%c", cenario1[j][i]);
+            }
+            printf("\n");
+        }
     }
 }
 
 void reiniciar(){
-    cenario1[x][y]=' ';
-    cenario1[xx][yx]=' ';
-    cenario1[xy][yy]=' ';
-    
     vidas--;
     
     x= xinicial;
@@ -118,28 +163,16 @@ void reiniciar(){
     xy=bx2;
     yy=by2;
     
-    cenario1[x][y]='^';
-    frentex=x+1;
-    frentey=y;
-    cenario1[xx][yx]='x';
-    cenario1[xy][yy]='y';
+    condicao='^';
+    frentex=x;
+    frentey=y-1;
 }
 
 void condicaoMorte(){
-    if (x==xx && y==yx){
-        reiniciar();
-        msgmorte();
-        return;
-    } 
-    if (x==xy && y==yy){
-        reiniciar();
-        msgmorte();
-        return;
-    }
-    if (x == 5 && y == 4){
-        reiniciar();
-        msgmorte();
-        return;
+    if (lugar == 0) { 
+        if (x==xx && y==yx){ reiniciar(); msgmorte(); return; } 
+        if (x==xy && y==yy){ reiniciar(); msgmorte(); return; }
+        if (x == 5 && y == 4){ reiniciar(); msgmorte(); return; }
     }
 }
 
@@ -151,19 +184,17 @@ void acao(char key){
             return;
         }
         else if(cenario1[x][y+1]=='='){
-            cenario1[x][y]=' ';
             y++;
-            cenario1[x][y]='v';
-            sleep(1000);
-            printf("Narrador: eu que deixei, ta?");
-            //leva pra outra sala 
+            condicao='v';
+            printf("\nNarrador: eu que deixei, ta?\n");
+            Sleep(1000); 
         }
-        cenario1[x][y]=' ';
-        y++;
-        cenario1[x][y]='v';
+        else {
+            y++;
+            condicao='v';
+        }
         frentex=x;
         frentey=y+1; 
-
         condicaoMorte();
         break;
     case 'w':
@@ -171,17 +202,15 @@ void acao(char key){
             return;
         }
         else if(cenario1[x][y-1]=='='){
-            cenario1[x][y]=' ';
             y--;
-            cenario1[x][y]='^';
-            sleep(1000);
-            printf("Narrador: eu que deixei, ta?");
-            //leva pra outra sala 
+            condicao='^';
+            printf("\nNarrador: eu que deixei, ta?\n");
+            Sleep(1000);
         }
-        cenario1[x][y]=' ';
-        y--;
-        cenario1[x][y]='^';
-
+        else {
+            y--;
+            condicao='^';
+        }
         frentex=x;
         frentey=y-1; 
         condicaoMorte();
@@ -191,16 +220,15 @@ void acao(char key){
             return;
         }
         else if(cenario1[x+1][y]=='='){
-            cenario1[x][y]=' ';
             x++;
-            cenario1[x][y]='>';
-            sleep(1000);
-            printf("Narrador: eu que deixei, ta?");
-            //leva pra outra sala 
+            condicao='>';
+            printf("\nNarrador: eu que deixei, ta?\n");
+            Sleep(1000);
         }
-        cenario1[x][y]=' ';
-        x++;
-        cenario1[x][y]='>';
+        else {
+            x++;
+            condicao='>';
+        }
         frentex=x+1;
         frentey=y;
         condicaoMorte();
@@ -210,16 +238,15 @@ void acao(char key){
             return;
         }
         else if(cenario1[x-1][y]=='='){
-            cenario1[x][y]=' ';
             x--;
-            cenario1[x][y]='<';
-            sleep(1000);
-            printf("Narrador: eu que deixei, ta?");
-            //leva pra outra sala 
+            condicao='<';
+            printf("\nNarrador: eu que deixei, ta?\n");
+            Sleep(1000);
         }
-        cenario1[x][y]=' ';
-        x--;
-        cenario1[x][y]='<'; 
+        else {
+            x--;
+            condicao='<'; 
+        }
         frentex=x-1;
         frentey=y;
         condicaoMorte();
@@ -230,123 +257,92 @@ void acao(char key){
 }
 
 void bixo(){
+    if (lugar == 1) return; 
     bixox= (rand()%4);
-    cenario1[xx][yx]=' '; 
     condicaoMorte();
     switch(bixox){
     case 0:
         if (cenario1[xx][yx-1]=='*'||cenario1[xx][yx-1]=='#'||cenario1[xx][yx-1]=='@'||cenario1[xx][yx-1]=='D'||cenario1[xx][yx-1]=='='){
-            yx++;
-            cenario1[xx][yx]='x';
-            return;
+            yx++; return;
         }
-        yx--;
-        cenario1[xx][yx]='x';
-        break;
+        yx--; break;
     case 1:
         if (cenario1[xx][yx+1]=='*'||cenario1[xx][yx+1]=='#'||cenario1[xx][yx+1]=='@'||cenario1[xx][yx+1]=='D'||cenario1[xx][yx+1]=='='){
-            yx--;
-            cenario1[xx][yx]='x';
-            return;
+            yx--; return;
         }
-        yx++;
-        cenario1[xx][yx]='x';
-        break;
+        yx++; break;
     case 2:
         if (cenario1[xx+1][yx]=='*'||cenario1[xx+1][yx]=='#'||cenario1[xx+1][yx]=='@'||cenario1[xx+1][yx]=='D'||cenario1[xx+1][yx]=='='){
-            xx--;
-            cenario1[xx][yx]='x';
-            return;
+            xx--; return;
         }
-        xx++;
-        cenario1[xx][yx]='x';
-        break;
+        xx++; break;
     default:
         if (cenario1[xx-1][yx]=='*'||cenario1[xx-1][yx]=='#'||cenario1[xx-1][yx]=='@'||cenario1[xx-1][yx]=='D'||cenario1[xx-1][yx]=='='){
-            xx++;
-            cenario1[xx][yx]='x';
-            return;
+            xx++; return;
         }
-        xx--;
-        cenario1[xx][yx]='x';
-        break;  
+        xx--; break;  
     }
     condicaoMorte();
 }
 
 void bixo2(){
+    if (lugar == 1) return; 
     condicaoMorte();
-    cenario1[xy][yy]=' ';
     bixoy= (rand()%2);
     
     while (1){
-        if (cenario1[xy][yy+1] == '#' || cenario1[xy][yy+1] == '*'|| cenario1[xy][yy+1] == '@'|| cenario1[xy][yy+1] == 'D'|| cenario1[xy][yy+1] == '='){
-            yy--;
-            continue;
-        }
-        if (cenario1[xy][yy-1] == '#' || cenario1[xy][yy-1] == '*'|| cenario1[xy][yy-1] == '@'|| cenario1[xy][yy-1] == 'D'|| cenario1[xy][yy-1] == '='){
-            yy++;
-            continue;
-        }
-        if (cenario1[xy+1][yy] == '#' || cenario1[xy+1][yy] == '*'|| cenario1[xy+1][yy] == '@'|| cenario1[xy+1][yy] == 'D'|| cenario1[xy+1][yy] == '='){
-            xy--;
-            continue;
-        }
-        if (cenario1[xy-1][yy] == '#' || cenario1[xy-1][yy] == '*'|| cenario1[xy-1][yy] == '@'|| cenario1[xy-1][yy] == 'D'|| cenario1[xy-1][yy] == '='){
-            xy++;
-            continue;
-        }
+        if (cenario1[xy][yy+1] == '#' || cenario1[xy][yy+1] == '*'|| cenario1[xy][yy+1] == '@'|| cenario1[xy][yy+1] == 'D'|| cenario1[xy][yy+1] == '='){ yy--; continue; }
+        if (cenario1[xy][yy-1] == '#' || cenario1[xy][yy-1] == '*'|| cenario1[xy][yy-1] == '@'|| cenario1[xy][yy-1] == 'D'|| cenario1[xy][yy-1] == '='){ yy++; continue; }
+        if (cenario1[xy+1][yy] == '#' || cenario1[xy+1][yy] == '*'|| cenario1[xy+1][yy] == '@'|| cenario1[xy+1][yy] == 'D'|| cenario1[xy+1][yy] == '='){ xy--; continue; }
+        if (cenario1[xy-1][yy] == '#' || cenario1[xy-1][yy] == '*'|| cenario1[xy-1][yy] == '@'|| cenario1[xy-1][yy] == 'D'|| cenario1[xy-1][yy] == '='){ xy++; continue; }
         
         if ( ( ( abs(xy - x) ) > ( abs(yy - y) ) ) && ( abs(xy-x) <= 3)) {
-            if (xy < x) xy++;
-            else xy--;
+            if (xy < x) xy++; else xy--;
         }
         else {
-            if (yy <= y) yy++;
-            else yy--;
+            if (yy <= y) yy++; else yy--;
         }
         break;
     }
-    cenario1[xy][yy] = 'y';
     condicaoMorte();
 }
 
-// Movida para cima do tutorial para o compilador saber que ela existe
 void inve(char tecla_apertada) {
     if (tecla_apertada=='e'||tecla_apertada=='E'){
         if (cenario1[frentex][frentey]=='M'){
-            strcpy(inventario[0], "Espada");
-            arma=1;
+            strcpy(inventario[0], "Espada"); arma=1;
         }
         else if (cenario1[frentex][frentey]=='M'){
-            strcpy(inventario[0], "Arco");
-            arma=2;
+            strcpy(inventario[0], "Arco"); arma=2;
         }
         else if (cenario1[frentex][frentey]=='M'){
-            strcpy(inventario[0], "Cajado");
-            arma=3;
+            strcpy(inventario[0], "Cajado"); arma=3;
         }
         else if (cenario1[frentex][frentey]=='@'){
             strcpy(inventario[1], "Chave");
-            cenario1[frentex][frentey]=' ';
             chave=1;
-            
         }
         else if (cenario1[frentex][frentey]=='D'){
             if (chave==1){
                 strcpy(inventario[1], "NADA");
-                cenario1[frentex][frentey]='=';
                 chave=0;
+                lugar=1; 
+                Sleep(1000);
+                cenario1[frentex][frentey]='=';
+                Sleep(1000);
+                iniciocenario1();
+                
+                // Reposiciona o jogador dentro da nova sala pequena 9x9
+                x = 4; y = 7;
+                condicao = '^';
             }
-            
         }
         system("cls");
         printf("===== INVENTARIO =====\n");
         for (i=0;i<2;i++){
             printf("- %s\n", inventario[i]);
         }
-        printf("\nNarrador: Oque achou ai pequeno?de enter\n");
-        //poderia fazer diferentes mensagens, com um sistema de aleatorio eu colocava uma msgs diferente
+        printf("\nNarrador: Oque achou ai pequeno? de enter\n");
         _getch();
         item=0;
     }
@@ -362,7 +358,7 @@ void inve(char tecla_apertada) {
 }
 
 void tutorial(){
-    cenario1[x][y] = '^'; 
+    condicao = '^'; 
     
     while (vidas > 0){
         system("cls");
@@ -429,7 +425,7 @@ int main(){
             printf("\033[2K");
             printf("<- %s ->\n", opcoes[decisao]);
         }
-        if (decisao==0){
+        if (decisao==0){ 
             system("cls");
             printf("Modo Jornada em desenvolvimento...\n");
             _getch();
@@ -441,17 +437,19 @@ int main(){
             bx2=1, by2=9;
             arma=0;
             chave=0;
+
+            tamanhol=11;
+            tamanhoc=11;
+            lugar=0;
             
             system("cls");
             printf("Narrador: cheiro de iniciante... que coragem\n");
-            printf("Narrador: como deve imaginar W, A, S, D são para movimento\n");
-            printf("Narrador: E interage, I inventario, por fim, O ataca, se voce conseguir haha");
+            printf("Narrador: como deve imaginar W, A, S, D sao para movimento\n");
+            printf("Narrador: E interage, I inventario, por fim, O ataca, se voce conseguir haha\n");
             Sleep(3000);
             system("cls");
             
             iniciocenario1();
-            cenario1[5][5]='@';
-            cenario1[10][2]='D';
             posicaoinicio();
             tutorial();
         }
