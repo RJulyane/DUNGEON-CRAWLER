@@ -87,8 +87,9 @@ void iniciocenario1(){
 }
 
 void cenario(){
-    //espinho e chave fixas
+    //espinho fixo
     cenario1[5][4]='#';
+    cenario1[10][2]='D';
     
     // Insere os elementos móveis nas posições atuais antes do print
     cenario1[xx][yx]='x';
@@ -145,7 +146,7 @@ void acao(char key){
     switch(key)
     {
     case 's':
-        if (cenario1[x][y+1]=='*'||cenario1[x][y+1]=='@'){
+        if (cenario1[x][y+1]=='*'||cenario1[x][y+1]=='@'||cenario1[x][y+1]=='D'||cenario1[x][y+1]=='='){
             return;
         }
         cenario1[x][y]=' ';
@@ -157,7 +158,7 @@ void acao(char key){
         condicaoMorte();
         break;
     case 'w':
-        if (cenario1[x][y-1]=='*'||cenario1[x][y-1]=='@'){
+        if (cenario1[x][y-1]=='*'||cenario1[x][y-1]=='@'||cenario1[x][y-1]=='D'||cenario1[x][y-1]=='='){
             return;
         }
         cenario1[x][y]=' ';
@@ -169,7 +170,7 @@ void acao(char key){
         condicaoMorte();
         break;
     case 'd':
-        if (cenario1[x+1][y]=='*'||cenario1[x+1][y]=='*'){
+        if (cenario1[x+1][y]=='*'||cenario1[x+1][y]=='@'||cenario1[x+1][y]=='D'||cenario1[x+1][y]=='='){
             return;
         }
         cenario1[x][y]=' ';
@@ -180,7 +181,7 @@ void acao(char key){
         condicaoMorte();
         break;
     case 'a':
-        if (cenario1[x-1][y]=='*'||cenario1[x-1][y]=='@'){
+        if (cenario1[x-1][y]=='*'||cenario1[x-1][y]=='@'||cenario1[x-1][y]=='D'||cenario1[x-1][y]=='='){
             return;
         }
         cenario1[x][y]=' ';
@@ -201,7 +202,7 @@ void bixo(){
     condicaoMorte();
     switch(bixox){
     case 0:
-        if (cenario1[xx][yx-1]=='*'||cenario1[xx][yx-1]=='#'||cenario1[xx][yx-1]=='@'){
+        if (cenario1[xx][yx-1]=='*'||cenario1[xx][yx-1]=='#'||cenario1[xx][yx-1]=='@'||cenario1[xx][yx-1]=='D'||cenario1[xx][yx-1]=='='){
             yx++;
             cenario1[xx][yx]='x';
             return;
@@ -210,7 +211,7 @@ void bixo(){
         cenario1[xx][yx]='x';
         break;
     case 1:
-        if (cenario1[xx][yx+1]=='*'||cenario1[xx][yx+1]=='#'||cenario1[xx][yx+1]=='@'){
+        if (cenario1[xx][yx+1]=='*'||cenario1[xx][yx+1]=='#'||cenario1[xx][yx+1]=='@'||cenario1[xx][yx+1]=='D'||cenario1[xx][yx+1]=='='){
             yx--;
             cenario1[xx][yx]='x';
             return;
@@ -219,7 +220,7 @@ void bixo(){
         cenario1[xx][yx]='x';
         break;
     case 2:
-        if (cenario1[xx+1][yx]=='*'||cenario1[xx+1][yx]=='#'||cenario1[xx+1][yx]=='@'){
+        if (cenario1[xx+1][yx]=='*'||cenario1[xx+1][yx]=='#'||cenario1[xx+1][yx]=='@'||cenario1[xx+1][yx]=='D'||cenario1[xx+1][yx]=='='){
             xx--;
             cenario1[xx][yx]='x';
             return;
@@ -228,7 +229,7 @@ void bixo(){
         cenario1[xx][yx]='x';
         break;
     default:
-        if (cenario1[xx-1][yx]=='*'||cenario1[xx-1][yx]=='#'||cenario1[xx-1][yx]=='@'){
+        if (cenario1[xx-1][yx]=='*'||cenario1[xx-1][yx]=='#'||cenario1[xx-1][yx]=='@'||cenario1[xx-1][yx]=='D'||cenario1[xx-1][yx]=='='){
             xx++;
             cenario1[xx][yx]='x';
             return;
@@ -246,19 +247,19 @@ void bixo2(){
     bixoy= (rand()%2);
     
     while (1){
-        if (cenario1[xy][yy+1] == '#' || cenario1[xy][yy+1] == '*'|| cenario1[xy][yy+1] == '@'){
+        if (cenario1[xy][yy+1] == '#' || cenario1[xy][yy+1] == '*'|| cenario1[xy][yy+1] == '@'|| cenario1[xy][yy+1] == 'D'|| cenario1[xy][yy+1] == '='){
             yy--;
             continue;
         }
-        if (cenario1[xy][yy-1] == '#' || cenario1[xy][yy-1] == '*'|| cenario1[xy][yy-1] == '@'){
+        if (cenario1[xy][yy-1] == '#' || cenario1[xy][yy-1] == '*'|| cenario1[xy][yy-1] == '@'|| cenario1[xy][yy-1] == 'D'|| cenario1[xy][yy-1] == '='){
             yy++;
             continue;
         }
-        if (cenario1[xy+1][yy] == '#' || cenario1[xy+1][yy] == '*'|| cenario1[xy+1][yy] == '@'){
+        if (cenario1[xy+1][yy] == '#' || cenario1[xy+1][yy] == '*'|| cenario1[xy+1][yy] == '@'|| cenario1[xy+1][yy] == 'D'|| cenario1[xy+1][yy] == '='){
             xy--;
             continue;
         }
-        if (cenario1[xy-1][yy] == '#' || cenario1[xy-1][yy] == '*'|| cenario1[xy-1][yy] == '@'){
+        if (cenario1[xy-1][yy] == '#' || cenario1[xy-1][yy] == '*'|| cenario1[xy-1][yy] == '@'|| cenario1[xy-1][yy] == 'D'|| cenario1[xy-1][yy] == '='){
             xy++;
             continue;
         }
