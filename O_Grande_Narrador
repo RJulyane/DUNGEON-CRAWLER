@@ -152,6 +152,8 @@ void cenario(){
             cenario1[2][2]='i';//cajado
         }        
         cenario1[4][4]='V';//npc
+
+        cenario1[4][1]='O';
                
         // Imprime a Sala 1 na tela
         for (i=0;i<tamanhol;i++){
@@ -488,6 +490,9 @@ void inve(char tecla_apertada) {
                 condicao = '^';
             }
         }
+        else if (cenario1[frentex][frentey]=='O'){
+            
+        }
         system("cls");
         printf("===== INVENTARIO =====\n");
         for (i=0;i<2;i++){
@@ -506,6 +511,7 @@ void inve(char tecla_apertada) {
         printf("\nNarrador: Nada surgiu magicamente, ta bom?\n");
         _getch();
     }
+    
 }
 
 void tutorial(){
