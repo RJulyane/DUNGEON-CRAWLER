@@ -34,11 +34,10 @@ int totalitens=0;
 int item=0;
 int arma=0;
 int chave=0;
-
-int falou_ferreiro = 0;
+int falou_ferreiro=0;
 
 void msgmorte(){
-    key = 0; 
+    key = 0;
     while (key!=13){
         system("cls");
         printf(" __      ______   _____ ______ \n");
@@ -54,7 +53,7 @@ void msgmorte(){
         printf(" | |  | | |_| |  _ <|  _ <| |___| |_| |\n");
         printf(" |_|  |_|\\___/|_| \\_\\_| \\_\\_____|\\___/ \n");
         printf("                                       \n");
-        if (vidas>0){ 
+        if (vidas>0){
             printf("Narrador: Mais uma vez ^^\nDe 'enter' para continuar");
         }
         key = _getch();
@@ -76,7 +75,7 @@ void gameover(){
     printf("| |__| |  \\  /  | |____| | \\ \\ \n");
     printf(" \\____/    \\/   |______|_|  \\_\\\n");
     printf("Narrador: HAHAHA Suas vidas acabaram pequeno.\n");
-    printf("Narrador: melhore na proxima..\n"); 
+    printf("Narrador: melhore na proxima..\n");
     _getch();
 }
 
@@ -96,7 +95,6 @@ void iniciocenario1(){
 }
 
 void cenario(){
-    // Limpa toda a matriz para evitar lixo de frames anteriores
     for (i=0; i<20; i++){
         for (j=0; j<20; j++){
             cenario1[j][i]=' ';
@@ -106,22 +104,22 @@ void cenario(){
     if (lugar==0){
         tamanhol=11;
         tamanhoc=11;
-        
+
         for (i=0; i<tamanhol; i++){
             for (j=0; j<tamanhoc; j++){
                 if (i==0 || j==0 || i==tamanhol-1 || j==tamanhoc-1)
                     cenario1[j][i]='*';
             }
         }
-        
-        cenario1[5][4]='#'; 
-        if (chave == 0) cenario1[5][5]='@'; 
-        cenario1[10][2]='D'; 
-        
-        cenario1[xx][yx]='x';
-        cenario1[xy][yy]='y';
-        cenario1[x][y]=condicao; 
-        
+
+        cenario1[5][4]='#';
+        if (chave == 0) cenario1[5][5]='@';
+        cenario1[10][2]='D';
+
+        if (xx != -1 && yx != -1) cenario1[xx][yx]='x';
+        if (xy != -1 && yy != -1) cenario1[xy][yy]='y';
+        cenario1[x][y]=condicao;
+
         for (i=0;i<tamanhol;i++){
             for(j=0;j<tamanhoc;j++){
                 printf("%c", cenario1[j][i]);
@@ -132,21 +130,21 @@ void cenario(){
     else if (lugar==1){
         tamanhol=9;
         tamanhoc=9;
-        
+
         for (i=0; i<tamanhol; i++){
             for (j=0; j<tamanhoc; j++){
                 if (i==0 || j==0 || i==tamanhol-1 || j==tamanhoc-1)
                     cenario1[j][i]='*';
             }
         }
-        
+
         cenario1[x][y]=condicao;
         if (arma!=1) cenario1[4][2]='f';
         if (arma!=2) cenario1[6][2]='+';
-        if (arma!=3) cenario1[2][2]='i';        
+        if (arma!=3) cenario1[2][2]='i';
         cenario1[4][4]='V';
         cenario1[4][1]='O';
-               
+
         for (i=0;i<tamanhol;i++){
             for(j=0;j<tamanhoc;j++){
                 printf("%c", cenario1[j][i]);
@@ -154,7 +152,7 @@ void cenario(){
             printf("\n");
         }
     }
-    else if(lugar==2){ 
+    else if(lugar==2){
         tamanhol=15;
         tamanhoc=15;
 
@@ -164,14 +162,16 @@ void cenario(){
                     cenario1[j][i]='*';
             }
         }
-        
-        cenario1[5][2]='V';  
-        cenario1[14][5]='D'; // Porta ajustada para o limite correto do mapa 15x15
-        
-        if (xx != -1 && yx != -1) cenario1[xx][yx]='x';
-        if (xy != -1 && yy != -1) cenario1[xy][yy]='y';
-        cenario1[x][y]=condicao; 
-        
+
+        if (falou_ferreiro == 0)
+            cenario1[5][2]='V';
+        else
+            cenario1[5][2]='v';
+
+        cenario1[7][13]='D';
+
+        cenario1[x][y]=condicao;
+
         for (i=0;i<tamanhol;i++){
             for(j=0;j<tamanhoc;j++){
                 printf("%c", cenario1[j][i]);
@@ -184,9 +184,19 @@ void cenario(){
 void botao(){
     if (lugar==1){
         system("cls");
-        printf("Narrador: isso era uma armafilha HAHAHA\n");
+        printf("Narrador: O ferreiro disse pra nao apertar.\n");
+        Sleep(1200);
+        printf("Narrador: Voce apertou.\n");
+        Sleep(1200);
+        printf("Narrador: Nao posso nem fingir surpresa.\n");
+        Sleep(1200);
+        printf("Narrador: HAHAHAHAHA\n");
+        Sleep(800);
         _getch();
-        vidas = -999; 
+        vidas = -999;
+        if (dialogoFerreiro==1){
+            lugar=3;
+        }
     }
 }
 
@@ -198,15 +208,16 @@ void reiniciar(){
     yx=by1;
     xy=bx2;
     yy=by2;
-    
+
     condicao='^';
     frentex=x;
     frentey=y-1;
+
 }
 
 void condicaoMorte(){
-    if (lugar == 0) { 
-        if (x==xx && y==yx){ reiniciar(); msgmorte(); return; } 
+    if (lugar == 0){
+        if (x==xx && y==yx){ reiniciar(); msgmorte(); return; }
         if (x==xy && y==yy){ reiniciar(); msgmorte(); return; }
         if (x == 5 && y == 4){ reiniciar(); msgmorte(); return; }
     }
@@ -217,36 +228,45 @@ void ataque(){
 
     int dx;
     int k;
-    char direcao = condicao; 
+    char direcao = condicao;
 
-    if (arma == 1){ 
+    if (arma == 1){
         int ax, ay;
+
         for (dx=-1; dx<=1; dx++){
-            if (direcao=='^'){ ax=x+dx; ay=y-1; }
+            if      (direcao=='^'){ ax=x+dx; ay=y-1; }
             else if (direcao=='v'){ ax=x+dx; ay=y+1; }
             else if (direcao=='>'){ ax=x+1;  ay=y+dx; }
             else if (direcao=='<'){ ax=x-1;  ay=y+dx; }
             else return;
-            
+
             if (ax < 0 || ax >= 20 || ay < 0 || ay >= 20) continue;
 
-            if (cenario1[ax][ay]=='x'){
-                cenario1[ax][ay]=' ';
-                xx=-1; yx=-1; 
-                printf("\nNarrador: Uau. Teve sorte.\n");
-                _getch(); 
-            }
-            else if (cenario1[ax][ay]=='y'){
-                cenario1[ax][ay]=' ';
-                xy=-1; yy=-1; 
-                printf("\nNarrador: Impressionante... de enojamento.\n");
-                _getch();
-            }
+            /* animacao: marca z */
+            if (cenario1[ax][ay]==' ' || cenario1[ax][ay]=='x' || cenario1[ax][ay]=='y')
+                cenario1[ax][ay]='z';
+        }
+        system("cls");
+        cenario();
+        printf("vidas= %d \n", vidas);
+        Sleep(300);
+
+        /* dano e limpeza */
+        for (dx=-1; dx<=1; dx++){
+            if      (direcao=='^'){ ax=x+dx; ay=y-1; }
+            else if (direcao=='v'){ ax=x+dx; ay=y+1; }
+            else if (direcao=='>'){ ax=x+1;  ay=y+dx; }
+            else if (direcao=='<'){ ax=x-1;  ay=y+dx; }
+            if (ax < 0 || ax >= 20 || ay < 0 || ay >= 20) continue;
+            if (cenario1[ax][ay]=='z') cenario1[ax][ay]=' ';
+            if (ax==xx && ay==yx){ xx=-1; yx=-1; printf("\nNarrador: Uau. Teve sorte.\n"); _getch(); }
+            else if (ax==xy && ay==yy){ xy=-1; yy=-1; printf("\nNarrador: Impressionante... de enojamento.\n"); _getch(); }
         }
     }
-    else if (arma == 2){ 
+    else if (arma == 2){
         int ax, ay;
-        int adx=0, ady=0; 
+        int adx=0, ady=0;
+        char anterior;
 
         if      (direcao=='^'){ adx=0;  ady=-1; }
         else if (direcao=='v'){ adx=0;  ady=1;  }
@@ -258,205 +278,79 @@ void ataque(){
         ay = y + ady;
 
         while (cenario1[ax][ay] != '*'){
-            if (cenario1[ax][ay]=='x'){
+            if (ax < 0 || ax >= 20 || ay < 0 || ay >= 20) break;
+
+            anterior = cenario1[ax][ay];
+            cenario1[ax][ay] = 'z';
+            system("cls");
+            cenario();
+            printf("vidas= %d \n", vidas);
+            Sleep(120);
+
+            if (ax==xx && ay==yx){
                 cenario1[ax][ay]=' ';
-                xx=-1; yx=-1; 
+                xx=-1; yx=-1;
                 printf("\nNarrador: Sorte de iniciante com arco...\n");
                 _getch();
                 return;
             }
-            else if (cenario1[ax][ay]=='y'){
+            else if (ax==xy && ay==yy){
                 cenario1[ax][ay]=' ';
-                xy=-1; yy=-1; 
+                xy=-1; yy=-1;
                 printf("\nNarrador: Que tiro patético. Mas funcionou.\n");
                 _getch();
                 return;
             }
+
+            cenario1[ax][ay] = anterior;
             ax += adx;
             ay += ady;
-            if (ax < 0 || ax >= 20 || ay < 0 || ay >= 20) break;
         }
         printf("\nNarrador: Errou tudo. Ate a parede riu.\n");
         _getch();
     }
-    else if (arma == 3){ 
+    else if (arma == 3){
         int acertou = 0;
         int vizinhosx[] = {-1, -1, -1,  0,  0,  1,  1,  1};
         int vizinhosy[] = {-1,  0,  1, -1,  1, -1,  0,  1};
+        int ax, ay;
 
         for (k=0; k<8; k++){
-            int ax = x + vizinhosx[k];
-            int ay = y + vizinhosy[k];
-
+            ax = x + vizinhosx[k];
+            ay = y + vizinhosy[k];
             if (ax < 0 || ax >= 20 || ay < 0 || ay >= 20) continue;
+            if (cenario1[ax][ay]==' ' || cenario1[ax][ay]=='x' || cenario1[ax][ay]=='y')
+                cenario1[ax][ay]='z';
+        }
+        system("cls");
+        cenario();
+        printf("vidas= %d \n", vidas);
+        Sleep(300);
 
-            if (cenario1[ax][ay]=='x'){
-                cenario1[ax][ay]=' ';
-                xx=-1; yx=-1; 
-                acertou=1;
-            }
-            else if (cenario1[ax][ay]=='y'){
-                cenario1[ax][ay]=' ';
-                xy=-1; yy=-1; 
-                acertou=1;
-            }
+        for (k=0; k<8; k++){
+            ax = x + vizinhosx[k];
+            ay = y + vizinhosy[k];
+            if (ax < 0 || ax >= 20 || ay < 0 || ay >= 20) continue;
+            if (cenario1[ax][ay]=='z') cenario1[ax][ay]=' ';
+            if (ax==xx && ay==yx){ xx=-1; yx=-1; acertou=1; }
+            else if (ax==xy && ay==yy){ xy=-1; yy=-1; acertou=1; }
         }
 
-        if (acertou){
+        if (acertou)
             printf("\nNarrador: Cajado. A arma dos covardes que nao sabem mirar.\n");
-        } else {
+        else
             printf("\nNarrador: Girou o cajado no ar como um idiota. Bonito.\n");
-        }
         _getch();
     }
 }
 
-void acao(char key){
-    switch(key)
-    {
-    case 's':
-        if (cenario1[x][y+1]=='*'||cenario1[x][y+1]=='@'||cenario1[x][y+1]=='D'){
-            return;
-        }
-        else if(cenario1[x][y+1]=='='){
-            y++;
-            condicao='v';
-            system("cls");
-            printf("\nNarrador: eu que deixei, ta?\n");
-            _getch();
-        }
-        else {
-            y++;
-            condicao='v';
-        }
-        frentex=x;
-        frentey=y+1; 
-        condicaoMorte();
-        break;
-    case 'w':
-        if (cenario1[x][y-1]=='*'||cenario1[x][y-1]=='@'||cenario1[x][y-1]=='D'||cenario1[x][y-1]=='='){
-            return;
-        }
-        else if(cenario1[x][y-1]=='='){
-            y--;
-            condicao='^';
-            system("cls");
-            printf("\nNarrador: eu que deixei, ta?\n");
-            _getch();
-        }
-        else {
-            y--;
-            condicao='^';
-        }
-        frentex=x;
-        frentey=y-1; 
-        condicaoMorte();
-        break;
-    case 'd':
-        if (cenario1[x+1][y]=='*'||cenario1[x+1][y]=='@'||cenario1[x+1][y]=='D'||cenario1[x+1][y]=='='){
-            return;
-        }
-        else if(cenario1[x+1][y]=='='){
-            x++;
-            condicao='>';
-            system("cls");
-            printf("\nNarrador: eu que deixei, ta?\n");
-            _getch();
-        }
-        else {
-            x++;
-            condicao='>';
-        }
-        frentex=x+1;
-        frentey=y;
-        condicaoMorte();
-        break;
-    case 'a':
-        if (cenario1[x-1][y]=='*'||cenario1[x-1][y]=='@'||cenario1[x-1][y]=='D'||cenario1[x-1][y]=='='){
-            return;
-        }
-        else if(cenario1[x-1][y]=='='){
-            x--;
-            condicao='<';
-            system("cls");
-            printf("\nNarrador: eu que deixei, ta?\n");
-            _getch();
-        }
-        else {
-            x--;
-            condicao='<'; 
-        }
-        frentex=x-1;
-        frentey=y;
-        condicaoMorte();
-        break;
-
-    case 'o':
-        ataque();
-        break;
-
-    default:
-        break;
-    }
-}
-
-void bixo(){
-    if (lugar == 1 || lugar == 2) return; 
-    bixox= (rand()%4);
-    condicaoMorte();
-    switch(bixox){
-    case 0:
-        if (cenario1[xx][yx-1]=='*'||cenario1[xx][yx-1]=='#'||cenario1[xx][yx-1]=='@'||cenario1[xx][yx-1]=='D'||cenario1[xx][yx-1]=='='){
-            yx++; return;
-        }
-        yx--; break;
-    case 1:
-        if (cenario1[xx][yx+1]=='*'||cenario1[xx][yx+1]=='#'||cenario1[xx][yx+1]=='@'||cenario1[xx][yx+1]=='D'||cenario1[xx][yx+1]=='='){
-            yx--; return;
-        }
-        yx++; break;
-    case 2:
-        if (cenario1[xx+1][yx]=='*'||cenario1[xx+1][yx]=='#'||cenario1[xx+1][yx]=='@'||cenario1[xx+1][yx]=='D'||cenario1[xx+1][yx]=='='){
-            xx--; return;
-        }
-        xx++; break;
-    default:
-        if (cenario1[xx-1][yx]=='*'||cenario1[xx-1][yx]=='#'||cenario1[xx-1][yx]=='@'||cenario1[xx-1][yx]=='D'||cenario1[xx-1][yx]=='='){
-            xx++; return;
-        }
-        xx--; break;  
-    }
-    condicaoMorte();
-}
-
-void bixo2(){
-    if (lugar == 1 || lugar == 2) return; 
-    condicaoMorte();
-    
-    int tentativas = 0;
-    while (tentativas < 5){
-        if (cenario1[xy][yy+1] == '#' || cenario1[xy][yy+1] == '*'|| cenario1[xy][yy+1] == '@'|| cenario1[xy][yy+1] == 'D'|| cenario1[xy][yy+1] == '='){ yy--; tentativas++; continue; }
-        if (cenario1[xy][yy-1] == '#' || cenario1[xy][yy-1] == '*'|| cenario1[xy][yy-1] == '@'|| cenario1[xy][yy-1] == 'D'|| cenario1[xy][yy-1] == '='){ yy++; tentativas++; continue; }
-        if (cenario1[xy+1][yy] == '#' || cenario1[xy+1][yy] == '*'|| cenario1[xy+1][yy] == '@'|| cenario1[xy+1][yy] == 'D'|| cenario1[xy+1][yy] == '='){ xy--; tentativas++; continue; }
-        if (cenario1[xy-1][yy] == '#' || cenario1[xy-1][yy] == '*'|| cenario1[xy-1][yy] == '@'|| cenario1[xy-1][yy] == 'D'|| cenario1[xy-1][yy] == '='){ xy++; tentativas++; continue; }
-        
-        if ( ( ( abs(xy - x) ) > ( abs(yy - y) ) ) && ( abs(xy-x) <= 3)) {
-            if (xy < x) xy++; else xy--;
-        }
-        else {
-            if (yy <= y) yy++; else yy--;
-        }
-        break;
-    }
-    condicaoMorte();
-}
 void dialogoFerreiro(){
     system("cls");
     printf("Ferreiro: Ah, finalmente apareceu.\n");
     Sleep(1800);
     printf("Narrador: Um velho sujo de fuligem. Que surpresa.\n");
     Sleep(1800);
-    printf("Ferreiro: Ignorando o comentario... Ouça bem, aventureiro.\n");
+    printf("Ferreiro: Ignorando o comentario... Ouca bem, aventureiro.\n");
     Sleep(1800);
     printf("Ferreiro: Tenho armas na minha sala dos fundos.\n");
     Sleep(1800);
@@ -486,28 +380,28 @@ void inve(char tecla_apertada) {
         if (cenario1[frentex][frentey]=='f'){
             strcpy(inventario[0], "Espada"); arma=1;
             system("cls");
-            printf("V(ferreiro): isso e uma espada, pode atacar uma unidade na sua frente");
-            printf("\n z z z");
-            printf("\n z z z");
-            printf("\n   ^");
+            printf("V(ferreiro): isso e uma espada, pode atacar uma unidade na sua frente\n");
+            printf(" z z z\n");
+            printf(" z z z\n");
+            printf("   ^\n");
             _getch();
             cenario1[frentex][frentey]=' ';
         }
         else if (cenario1[frentex][frentey]=='+'){
             strcpy(inventario[0], "Arco"); arma=2;
             system("cls");
-            printf("V(ferreiro): isso e um arco, pode atacar a sua frente, ate encontrar um obstaculo");
-            printf("\n  > z z z z z z y");
+            printf("V(ferreiro): isso e um arco, pode atacar a sua frente, ate encontrar um obstaculo\n");
+            printf(" > z z z z z z y\n");
             _getch();
             cenario1[frentex][frentey]=' ';
         }
         else if (cenario1[frentex][frentey]=='i'){
             strcpy(inventario[0], "Cajado"); arma=3;
             system("cls");
-            printf("V(ferreiro): isso e um cajado, pode atacar a sua volta");
-            printf("\n z z z");
-            printf("\n z ^ z");
-            printf("\n z z z");
+            printf("V(ferreiro): isso e um cajado, pode atacar a sua volta\n");
+            printf(" z z z\n");
+            printf(" z ^ z\n");
+            printf(" z z z\n");
             _getch();
             cenario1[frentex][frentey]=' ';
         }
@@ -515,27 +409,56 @@ void inve(char tecla_apertada) {
             strcpy(inventario[1], "Chave");
             chave=1;
         }
+        else if (cenario1[frentex][frentey]=='V' || cenario1[frentex][frentey]=='v'){
+            if (lugar == 2 && falou_ferreiro == 0){
+                dialogoFerreiro();
+            }
+            else if (lugar == 2 && falou_ferreiro == 1){
+                system("cls");
+                printf("Ferreiro: Va logo. A porta esta ali.\n");
+                printf("Narrador: Ele ja nao aguenta mais voce.\n");
+                _getch();
+            }
+            else if (lugar == 1){
+                system("cls");
+                printf("Ferreiro: Escolha logo. Nao fico aqui o dia todo.\n");
+                printf("Narrador: Mentira, ele nao tem mais nada pra fazer.\n");
+                _getch();
+            }
+            return;
+        }
         else if (cenario1[frentex][frentey]=='D'){
-            if (lugar == 2 && chave == 1){ // Se estiver na Vila
+            if (lugar == 2 && chave == 1){
+                system("cls");
+                printf("Narrador: Ah, foi pela porta. Que decepcionantemente normal.\n");
+                Sleep(1500);
                 strcpy(inventario[1], "NADA");
-                chave=0;
-                lugar=1; // Vai para sala de armas
+                chave = 0;
+                lugar = 1;
                 iniciocenario1();
                 x = 4; y = 7;
                 condicao = '^';
-                frentex=x; frentey=y-1;
+                frentex = x; frentey = y-1;
+                return;
+            }
+            else if (lugar == 2 && chave == 0){
+                system("cls");
+                printf("Narrador: Esta trancada.\n");
+                Sleep(800);
+                printf("Narrador: Talvez falar com o velho fedorento ajude.\n");
+                _getch();
                 return;
             }
             if (lugar == 0 && chave==1){
                 strcpy(inventario[1], "NADA");
                 chave=0;
-                lugar=1; 
+                lugar=1;
                 Sleep(500);
-                cenario1[frentex][frentey]='=';
-                Sleep(1000);
                 iniciocenario1();
                 x = 4; y = 7;
                 condicao = '^';
+                frentex = x; frentey = y-1;
+                return;
             }
         }
         else if (cenario1[frentex][frentey]=='O'){
@@ -550,7 +473,6 @@ void inve(char tecla_apertada) {
         printf("\nNarrador: Oque achou ai pequeno? de enter\n");
         _getch();
         item=0;
-        
     }
     else if (tecla_apertada=='i'||tecla_apertada=='I'){
         system("cls");
@@ -563,33 +485,152 @@ void inve(char tecla_apertada) {
     }
 }
 
+void acao(char key){
+    switch(key)
+    {
+    case 's':
+        if (cenario1[x][y+1]=='*'||cenario1[x][y+1]=='@'||cenario1[x][y+1]=='D'){
+            return;
+        }
+        else if(cenario1[x][y+1]=='='){
+            y++;
+            condicao='v';
+            system("cls");
+            printf("\nNarrador: eu que deixei, ta?\n");
+            _getch();
+        }
+        else {
+            y++;
+            condicao='v';
+        }
+        frentex=x;
+        frentey=y+1;
+        condicaoMorte();
+        break;
+    case 'w':
+        if (cenario1[x][y-1]=='*'||cenario1[x][y-1]=='@'||cenario1[x][y-1]=='D'||cenario1[x][y-1]=='='){
+            return;
+        }
+        else {
+            y--;
+            condicao='^';
+        }
+        frentex=x;
+        frentey=y-1;
+        condicaoMorte();
+        break;
+    case 'd':
+        if (cenario1[x+1][y]=='*'||cenario1[x+1][y]=='@'||cenario1[x+1][y]=='D'||cenario1[x+1][y]=='='){
+            return;
+        }
+        else {
+            x++;
+            condicao='>';
+        }
+        frentex=x+1;
+        frentey=y;
+        condicaoMorte();
+        break;
+    case 'a':
+        if (cenario1[x-1][y]=='*'||cenario1[x-1][y]=='@'||cenario1[x-1][y]=='D'||cenario1[x-1][y]=='='){
+            return;
+        }
+        else {
+            x--;
+            condicao='<';
+        }
+        frentex=x-1;
+        frentey=y;
+        condicaoMorte();
+        break;
+    case 'o':
+        ataque();
+        break;
+    default:
+        break;
+    }
+}
+
+void bixo(){
+    if (lugar == 1 || lugar == 2) return;
+    if (xx == -1 || yx == -1) return;
+    bixox= (rand()%4);
+    condicaoMorte();
+    switch(bixox){
+    case 0:
+        if (cenario1[xx][yx-1]=='*'||cenario1[xx][yx-1]=='#'||cenario1[xx][yx-1]=='@'||cenario1[xx][yx-1]=='D'||cenario1[xx][yx-1]=='='){
+            yx++; return;
+        }
+        yx--; break;
+    case 1:
+        if (cenario1[xx][yx+1]=='*'||cenario1[xx][yx+1]=='#'||cenario1[xx][yx+1]=='@'||cenario1[xx][yx+1]=='D'||cenario1[xx][yx+1]=='='){
+            yx--; return;
+        }
+        yx++; break;
+    case 2:
+        if (cenario1[xx+1][yx]=='*'||cenario1[xx+1][yx]=='#'||cenario1[xx+1][yx]=='@'||cenario1[xx+1][yx]=='D'||cenario1[xx+1][yx]=='='){
+            xx--; return;
+        }
+        xx++; break;
+    default:
+        if (cenario1[xx-1][yx]=='*'||cenario1[xx-1][yx]=='#'||cenario1[xx-1][yx]=='@'||cenario1[xx-1][yx]=='D'||cenario1[xx-1][yx]=='='){
+            xx++; return;
+        }
+        xx--; break;
+    }
+    condicaoMorte();
+}
+
+void bixo2(){
+    if (lugar == 1 || lugar == 2) return;
+    if (xy == -1 || yy == -1) return;
+    condicaoMorte();
+
+    int tentativas = 0;
+    while (tentativas < 5){
+        if (cenario1[xy][yy+1]=='#'||cenario1[xy][yy+1]=='*'||cenario1[xy][yy+1]=='@'||cenario1[xy][yy+1]=='D'||cenario1[xy][yy+1]=='='){ yy--; tentativas++; continue; }
+        if (cenario1[xy][yy-1]=='#'||cenario1[xy][yy-1]=='*'||cenario1[xy][yy-1]=='@'||cenario1[xy][yy-1]=='D'||cenario1[xy][yy-1]=='='){ yy++; tentativas++; continue; }
+        if (cenario1[xy+1][yy]=='#'||cenario1[xy+1][yy]=='*'||cenario1[xy+1][yy]=='@'||cenario1[xy+1][yy]=='D'||cenario1[xy+1][yy]=='='){ xy--; tentativas++; continue; }
+        if (cenario1[xy-1][yy]=='#'||cenario1[xy-1][yy]=='*'||cenario1[xy-1][yy]=='@'||cenario1[xy-1][yy]=='D'||cenario1[xy-1][yy]=='='){ xy++; tentativas++; continue; }
+
+        if ( ( abs(xy - x) > abs(yy - y) ) && ( abs(xy-x) <= 3) ){
+            if (xy < x) xy++; else xy--;
+        }
+        else {
+            if (yy <= y) yy++; else yy--;
+        }
+        break;
+    }
+    condicaoMorte();
+}
+
 void tutorial(){
-    condicao = '^'; 
+    condicao = '^';
     frentex = x;
     frentey = y - 1;
-    
+
     while (vidas > 0){
         system("cls");
         cenario();
-        if (vidas == -999) break; // Sai voluntariamente do loop do tutorial
-        printf("vidas= %d \n", vidas);          
-        
+        if (vidas == -999) break;
+        printf("vidas= %d \n", vidas);
+
         char key = _getch();
-        if (key == 27){ 
+        if (key == 27){
             break;
         }
         if (key=='e'||key=='i'||key=='E'||key=='I'){
             inve(key);
             continue;
         }
-            
+
         acao(key);
         bixo();
         bixo2();
-        
+
         MORTE=0;
     }
-    
+
     if(vidas <= 0 && vidas != -999){
         system("cls");
         gameover();
@@ -606,7 +647,7 @@ void posicaoinicio(){
 int main(){
     srand(time(0));
     key = 0;
-    
+
     while (key!=27){
         int decisao=0;
         char opcoes[3][20]={"Jornada", "Treinamento", "Abandonar reino"};
@@ -619,10 +660,10 @@ int main(){
         printf(" |_____/ \\____/|_| \\_|\\_____|______\\____/|_| \\_|\n");
         printf("Narrador: Esta preparado?\n");
         printf("<- %s ->\n", opcoes[decisao]);
-        
+
         while (1){
             key = _getch();
-            if (key==13) break; 
+            if (key==13) break;
             if (key=='d'){
                 if (decisao<2) decisao++;
             }
@@ -635,15 +676,20 @@ int main(){
             printf("\033[2K");
             printf("<- %s ->\n", opcoes[decisao]);
         }
+
         if (decisao==0){ 
+            strcpy(inventario[0], "NADA");
+            strcpy(inventario[1], "NADA");
+            
             vidas = 3;
             arma = 0;
-            chave = 1; // Ferreiro nos entrega a chave de forma direta na lore
-            lugar = 2; // Sala 2 = Vila
-            
-            xinicial = 5; 
-            yinicial = 8; 
-            
+            chave = 0;
+            falou_ferreiro = 0;
+            lugar = 2;
+
+            xinicial = 5;
+            yinicial = 8;
+
             bx1 = -1; by1 = -1;
             bx2 = -1; by2 = -1;
 
@@ -654,40 +700,42 @@ int main(){
             Sleep(1500);
             printf("Narrador: Nao ha monstros aqui por enquanto, entao acerte seus passos.\n");
             Sleep(1500);
-            printf("Narrador: Siga ao Sul ate a porta (D). Ela leva a sala de ferramentas do Ferreiro.\n");
+            printf("Narrador: Fale com o Ferreiro (V) e siga para a porta (D).\n");
             printf("\nPressione qualquer tecla para comecar sua jornada...");
             _getch();
             system("cls");
 
             iniciocenario1();
             posicaoinicio();
-            tutorial(); 
+            tutorial();
         }
         else if (decisao==1){
-            vidas = 3; 
-            xinicial=5, yinicial=6;
-            bx1=9, by1=1;
-            bx2=1, by2=9;
+            strcpy(inventario[0], "NADA");
+            strcpy(inventario[1], "NADA");
+            vidas = 3;
+            xinicial=5; yinicial=6;
+            bx1=9; by1=1;
+            bx2=1; by2=9;
             arma=0;
             chave=0;
+            falou_ferreiro=0;
 
             tamanhol=11;
             tamanhoc=11;
             lugar=0;
-            
+
             system("cls");
             printf("Narrador: cheiro de iniciante... que coragem\n");
             printf("Narrador: como deve imaginar W, A, S, D sao para movimento\n");
             printf("Narrador: E interage, I inventario, por fim, O ataca, se voce conseguir haha\n");
             printf("\nPressione ENTER para iniciar o treinamento...");
-            
-            // Loop corrigido com captura de tecla interna
+
             char t_key = 0;
-            while(t_key != 13) {
+            while(t_key != 13){
                 t_key = _getch();
             }
             system("cls");
-            
+
             iniciocenario1();
             posicaoinicio();
             tutorial();
