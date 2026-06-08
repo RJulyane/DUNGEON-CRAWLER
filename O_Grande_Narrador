@@ -164,6 +164,15 @@ void cenario(){
         }
     }
 }
+void botao(){
+    if (lugar==1){
+        system("cls");
+        printf("Narrador: isso era uma armafilha HAHAHA\n");
+        _getch();
+        vidas = -999; // Força a saída do tutorial para voltar ao menu
+        return;
+    }
+}
 
 void reiniciar(){
     vidas--;
@@ -491,7 +500,7 @@ void inve(char tecla_apertada) {
             }
         }
         else if (cenario1[frentex][frentey]=='O'){
-            
+            botao();
         }
         system("cls");
         printf("===== INVENTARIO =====\n");
