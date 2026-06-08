@@ -92,8 +92,42 @@ void iniciocenario1(){
         tamanhol=15;
         tamanhoc=15;
     }
+    else if (lugar==3){
+        tamanhol=10;
+        tamanhoc=1036+5
+        ;
+    }
 }
+void dialogoFerreiro(){
+    system("cls");
+    printf("Ferreiro: Ah, finalmente apareceu.\n");
+    Sleep(1800);
+    printf("Narrador: Um velho sujo de fuligem. Que surpresa.\n");
+    Sleep(1800);
+    printf("Ferreiro: Ignorando o comentario... Ouca bem, aventureiro.\n");
+    Sleep(1800);
+    printf("Ferreiro: Tenho armas na minha sala dos fundos.\n");
+    Sleep(1800);
+    printf("Narrador: 'Sala dos fundos'. Chique para um galpao fedorento.\n");
+    Sleep(1800);
+    printf("Ferreiro: NARRADOR. Posso te derreter.\n");
+    Sleep(1800);
+    printf("Narrador: ...continuando.\n");
+    Sleep(1800);
+    printf("Ferreiro: Aqui esta a chave. Va la e escolha sua arma.\n");
+    Sleep(1800);
+    printf("Ferreiro: Ah, e nao toque no botao vermelho.\n");
+    Sleep(1800);
+    printf("Narrador: Claro que vai tocar.\n");
+    Sleep(1800);
+    printf("\n[Ferreiro adicionou CHAVE ao seu inventario]\n");
+    printf("\nPressione qualquer tecla para continuar...\n");
+    _getch();
 
+    strcpy(inventario[1], "Chave");
+    chave = 1;
+    falou_ferreiro = 1;
+}
 void cenario(){
     for (i=0; i<20; i++){
         for (j=0; j<20; j++){
@@ -179,6 +213,42 @@ void cenario(){
             printf("\n");
         }
     }
+    else if(lugar==3){
+        x=3;
+        y=3;
+        xx=8;
+        yx=2;
+        xy=4;
+        yy=6;
+        tamanhol=10;
+        tamanhoc=10;
+
+        for (i=0; i<tamanhol; i++){
+            for (j=0; j<tamanhoc; j++){
+                if (i==0 || j==0 || i==tamanhol-1 || j==tamanhoc-1)
+                    cenario1[j][i]='*';
+            }
+        }
+
+        /*if (falou_ferreiro == 0)
+            cenario1[5][2]='V';
+        else
+            cenario1[5][2]='v';
+        */
+       
+        if (xx != -1 && yx != -1) cenario1[xx][yx]='x';
+        if (xy != -1 && yy != -1) cenario1[xy][yy]='y';
+        cenario1[8][13]='L'; // fazer a configuração da escadaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+        cenario1[x][y]=condicao;
+
+        for (i=0;i<tamanhol;i++){
+            for(j=0;j<tamanhoc;j++){
+                printf("%c", cenario1[j][i]);
+            }
+            printf("\n");
+        }
+    }
 }
 
 void botao(){
@@ -193,9 +263,12 @@ void botao(){
         printf("Narrador: HAHAHAHAHA\n");
         Sleep(800);
         _getch();
-        vidas = -999;
-        if (dialogoFerreiro==1){
+        if (falou_ferreiro==1){
             lugar=3;
+            cenario();
+            acao(key);
+            bixo();
+            bixo2();
         }
     }
 }
@@ -342,37 +415,6 @@ void ataque(){
             printf("\nNarrador: Girou o cajado no ar como um idiota. Bonito.\n");
         _getch();
     }
-}
-
-void dialogoFerreiro(){
-    system("cls");
-    printf("Ferreiro: Ah, finalmente apareceu.\n");
-    Sleep(1800);
-    printf("Narrador: Um velho sujo de fuligem. Que surpresa.\n");
-    Sleep(1800);
-    printf("Ferreiro: Ignorando o comentario... Ouca bem, aventureiro.\n");
-    Sleep(1800);
-    printf("Ferreiro: Tenho armas na minha sala dos fundos.\n");
-    Sleep(1800);
-    printf("Narrador: 'Sala dos fundos'. Chique para um galpao fedorento.\n");
-    Sleep(1800);
-    printf("Ferreiro: NARRADOR. Posso te derreter.\n");
-    Sleep(1800);
-    printf("Narrador: ...continuando.\n");
-    Sleep(1800);
-    printf("Ferreiro: Aqui esta a chave. Va la e escolha sua arma.\n");
-    Sleep(1800);
-    printf("Ferreiro: Ah, e nao toque no botao vermelho.\n");
-    Sleep(1800);
-    printf("Narrador: Claro que vai tocar.\n");
-    Sleep(1800);
-    printf("\n[Ferreiro adicionou CHAVE ao seu inventario]\n");
-    printf("\nPressione qualquer tecla para continuar...\n");
-    _getch();
-
-    strcpy(inventario[1], "Chave");
-    chave = 1;
-    falou_ferreiro = 1;
 }
 
 void inve(char tecla_apertada) {
@@ -704,7 +746,9 @@ int main(){
             printf("\nPressione qualquer tecla para comecar sua jornada...");
             _getch();
             system("cls");
-
+            acao(key);
+            bixo();
+            bixo2();
             iniciocenario1();
             posicaoinicio();
             tutorial();
@@ -725,6 +769,7 @@ int main(){
             lugar=0;
 
             system("cls");
+
             printf("Narrador: cheiro de iniciante... que coragem\n");
             printf("Narrador: como deve imaginar W, A, S, D sao para movimento\n");
             printf("Narrador: E interage, I inventario, por fim, O ataca, se voce conseguir haha\n");
